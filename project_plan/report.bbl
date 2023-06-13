@@ -1,0 +1,47 @@
+\begin{thebibliography}{1}
+
+\bibitem{genetic_on_TSP}
+Kylie Bryant.
+\newblock Genetic algorithms and the travelling salesman problem.
+\newblock {\em Department of Mathematics}, December 2000.
+
+\bibitem{TSP_review}
+Shabnam~Sangwan Chetna~Dahiya.
+\newblock Literature review on travelling salesman problem.
+\newblock {\em International Journal of Research}, 05(16):1152--1155, June 2018.
+
+\bibitem{christofides_inbook}
+Roberto Goodrich, Michael T.;~Tamassia.
+\newblock {\em Algorithm Design and Applications}.
+\newblock Number 513-514. Wiley, 2015.
+
+\bibitem{para_ACO}
+Mitica~Craus Laurentiu~Rudeanu.
+\newblock Parallel implementation of ant colony optimization for travelling salesman problem.
+\newblock {\em Proceedings of the 4th WSEAS Int. Conf. on Soft Computing, Optimization, Simulation and Manufacturing Systems (SOSM 2004),}, Miami(Florida), April 2004.
+
+\bibitem{lawler1985travelling}
+E.L. Lawler.
+\newblock {\em The Travelling Salesman Problem: A Guided Tour of Combinatorial Optimization}.
+\newblock Wiley-Interscience series in discrete mathematics and optimization. John Wiley \& Sons, 1985.
+
+\bibitem{ACO_on_TSP}
+Miguel A.~Marino Mohammad Reza~Jalali, Abbas~Afshar.
+\newblock Ant colony optimization algorithm (aco): a new heuristic approach for engineering optimization.
+\newblock {\em Proceedings of the 6th WSEAS Int. Conf. on Evolutionary Computing}, 16-18:188--192, June 2005.
+
+\bibitem{VANBEVERN2020118}
+Ren{\'e} {van Bevern} and Viktoriia~A. Slugina.
+\newblock A historical note on the 3/2-approximation algorithm for the metric traveling salesman problem.
+\newblock {\em Historia Mathematica}, 53:118--127, 2020.
+
+\bibitem{TSP_wiki}
+Wikipedia.
+\newblock Travelling salesman problem.
+
+\bibitem{improved_SA}
+Gao Ye and Xue Rui.
+\newblock An improved simulated annealing andgenetic algorithm for tsp.
+\newblock In {\em 2013 5th IEEE International Conference on Broadband Network and Multimedia Technology}, pages 6--9, 2013.
+
+\end{thebibliography}

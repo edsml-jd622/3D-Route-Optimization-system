@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.1)  6 JUN 2023 09:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.1)  15 JUN 2023 17:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/jd622/imperial_college_london/irp-jd622/latex-template/report.tex
-(/Users/jd622/imperial_college_london/irp-jd622/latex-template/report.tex
+**/Users/jd622/imperial_college_london/irp-jd622/project_plan/report.tex
+(/Users/jd622/imperial_college_london/irp-jd622/project_plan/report.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (./report-template.cls
 Document Class: report-template 2021/06/04 v1.0 Macros for report
@@ -459,44 +459,30 @@ Package microtype Info: Loading generic protrusion settings for font family
  [1
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 34--37
+Underfull \hbox (badness 10000) in paragraph at lines 30--34
 
  []
 
-<./figures//solution_of_a_TSP.png, id=38, 1284.8pt x 1195.46625pt>
-File: ./figures//solution_of_a_TSP.png Graphic file (type png)
-<use ./figures//solution_of_a_TSP.png>
-Package pdftex.def Info: ./figures//solution_of_a_TSP.png  used on input line 43.
-(pdftex.def)             Requested size: 91.04742pt x 84.71269pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--42
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--46
+
+ []
+
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+<./figures//solution_of_a_TSP.png, id=38, 1284.8pt x 1195.46625pt>
+File: ./figures//solution_of_a_TSP.png Graphic file (type png)
+<use ./figures//solution_of_a_TSP.png>
+Package pdftex.def Info: ./figures//solution_of_a_TSP.png  used on input line 62.
+(pdftex.def)             Requested size: 91.04742pt x 84.71269pt.
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--53
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--57
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--62
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 63--67
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 68--71
+Underfull \hbox (badness 10000) in paragraph at lines 67--81
 
  []
 
@@ -504,55 +490,71 @@ Underfull \hbox (badness 10000) in paragraph at lines 68--71
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.71 
+l.81 
       [1 <./figures//solution_of_a_TSP.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 80--84
+Underfull \hbox (badness 10000) in paragraph at lines 82--88
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 90--95
+Underfull \hbox (badness 10000) in paragraph at lines 94--99
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--102
+Underfull \hbox (badness 10000) in paragraph at lines 100--105
 
  []
 
-LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 110.
-(/usr/local/texlive/2023/texmf-dist/tex/latex/base/ts1cmss.fd
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--109
+
+ []
+
+[2]
+LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 123.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/base/ts1cmss.fd
 File: ts1cmss.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [2{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 128--131
+<./figures//ghana_road.png, id=81, 446.6286pt x 617.9085pt>
+File: ./figures//ghana_road.png Graphic file (type png)
+<use ./figures//ghana_road.png>
+Package pdftex.def Info: ./figures//ghana_road.png  used on input line 150.
+(pdftex.def)             Requested size: 199.16928pt x 275.54826pt.
+<./figures//ghana_elevation.png, id=82, 385.1991pt x 328.8285pt>
+File: ./figures//ghana_elevation.png Graphic file (type png)
+<use ./figures//ghana_elevation.png>
+Package pdftex.def Info: ./figures//ghana_elevation.png  used on input line 155.
+(pdftex.def)             Requested size: 199.16928pt x 170.02342pt.
+ [3{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 170--172
 
  []
 
 (./report.bbl
 LaTeX Font Info:    Font shape `OT1/cmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 6.
- [3]) [4] (./report.aux)
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 5.
+ [4 <./figures//ghana_road.png> <./figures//ghana_elevation.png>]) [5] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 29931FD2FD76464A3127989FDDF80D7A;740.
  ) 
 Here is how much of TeX's memory you used:
- 16692 strings out of 476025
- 285061 string characters out of 5790018
- 1860388 words of memory out of 5000000
- 36802 multiletter control sequences out of 15000+600000
- 523032 words of font info for 113 fonts, out of 8000000 for 9000
+ 16730 strings out of 476025
+ 285796 string characters out of 5790018
+ 1862388 words of memory out of 5000000
+ 36821 multiletter control sequences out of 15000+600000
+ 523111 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,9n,90p,1065b,562s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb>
-Output written on report.pdf (5 pages, 202071 bytes).
+ 90i,8n,90p,1063b,566s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb>
+Output written on report.pdf (6 pages, 497897 bytes).
 PDF statistics:
  150 PDF objects out of 1000 (max. 8388607)
- 113 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
- 28726 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 116 compressed objects within 2 object streams
+ 30 named destinations out of 1000 (max. 500000)
+ 24640 words of extra memory for PDF output out of 24883 (max. 10000000)
 

@@ -10,6 +10,7 @@ import pyproj
 from mpl_toolkits.mplot3d import Axes3D
 import networkx as nx
 from City import City
+from WeightCalculation import WeightCalculation
 
 class RoadNetwork3D():
     def __init__(self, path1:str, path2:str, ele_bound:list = [6,5,-1,0]) -> None:
@@ -28,7 +29,10 @@ class RoadNetwork3D():
         self.road2D = copy.deepcopy(self.origin_2Ddata['elements'])
         self.road3D = copy.deepcopy(self.road2D)
         self.utm_converter = pyproj.Proj(proj='utm', zone=30, ellps='WGS84')
-        self.network = nx.Graph()
+        self.network = nx.DiGraph()
+        self.weight_tool = WeightCalculation()
+        self.road_type = ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary','trunk_link', 'primary_link', 'secondary_link','tertiary_link']
+
 
     def show_status(self) -> None:
         """
@@ -53,7 +57,6 @@ class RoadNetwork3D():
         else:
             print('The data is original 2D version.')
 
-
     def print_data(self, index:int=0) -> None:
         """
         Print the information of a specific road segment.
@@ -70,7 +73,6 @@ class RoadNetwork3D():
         """
         formatted_data = json.dumps(self.road3D[index], indent=4)
         print(formatted_data)
-
 
     def draw_3Droad(self, way_list:list = ['primary']) -> None: 
         """
@@ -147,20 +149,17 @@ class RoadNetwork3D():
         plt.grid(True)
         plt.show()
 
-    def integrate(self, target_list:List[str] = ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']) -> None:
+    def integrate(self) -> None:
         """
         Integrate the 2D road network json data with elevation data into a 3D road network json data.
         It will automatically transfrom coordinates in lat/lon format into northing/easting format
         eg:
         {'lat': 5.5441366, 'lon': -0.2410432} --> {'lat': 613524.3283578429, 'lon': 805692.9580435926, 'ele': 29.284969791531932}
 
-        Users can define which types of road segments to integrate, 
-        Types in clude: ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']
-
         Parameters
         ----------
-        target_list : list, optional
-            The list contains all road types the user want to integrate (default is ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']).
+        None
+            This function does not have any parameters
 
         Returns
         -------
@@ -186,7 +185,7 @@ class RoadNetwork3D():
             pixel_length_lon = (right_bound - left_bound) / pixel_number_lon
 
             for way in self.road3D:
-                if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in target_list:
+                if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
                     node_ids = way['nodes']
                     #Get the coordinates of each point in each road segment: (lon, lat)
                     coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat']) for node_index, node_id in enumerate(node_ids)]
@@ -277,18 +276,51 @@ class RoadNetwork3D():
             print('The network has been created, no need to do it again.')
         else:
             for way in self.road3D:
-                if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']:
+                if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
                     node_ids = way['nodes']
                     #Get the coordinates of each point in each road segment: (lon, lat)
                     coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat'], way['geometry'][node_index]['ele']) for node_index, node_id in enumerate(node_ids)]
                     x_values, y_values, z_values = zip(*coordinates)
-                    for node_index, node_id in enumerate(node_ids):
-                        if node_index == len(node_ids)-1:
-                            nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
-                            continue
-                        else:
-                            self.network.add_edges_from([(node_id, node_ids[node_index+1])], distance = np.sqrt((x_values[node_index]-x_values[node_index+1])**2 + (y_values[node_index]-y_values[node_index+1])**2 + (z_values[node_index]-z_values[node_index+1])**2)) 
-                            nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+
+                    if 'tags' in way and 'oneway' in way['tags'] and way['tags']['oneway'] == 'yes':
+                        #create edge for one-way road
+                        for node_index, node_id in enumerate(node_ids):
+                            if node_index == len(node_ids)-1:
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+                                continue
+                            else:
+                                self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
+                                                distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1])
+                                                )
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+                    else:
+                        #create edge for bidirectional road, by creating two edges in different direction for each road segment .
+                        for node_index, node_id in enumerate(node_ids):
+                            if node_index == len(node_ids)-1:
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+                                continue
+                            else:
+                                self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
+                                                distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1])
+                                ) 
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+                        
+                        #The opposite direction of the same road segment. Reverse the points list of each road segment.
+                        node_ids = list(reversed(node_ids))
+                        coordinates = list(reversed(coordinates))
+                        x_values, y_values, z_values = zip(*coordinates)
+                        for node_index, node_id in enumerate(node_ids):
+                            if node_index == len(node_ids)-1:
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
+                                continue
+                            else:
+                                self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
+                                                distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1]) 
+                                )
+                                nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
             self.flag_network = 1
 
     def get_shortest_path(self, city1:City, city2:City, weight:str = 'distance') -> List[int]:
@@ -380,4 +412,24 @@ if __name__ == '__main__':
     print(accra_road.get_closest_point(kotoka_airport))
     print(accra_road.get_shortest_path(kotoka_airport, uni_ghana))
     print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana))
-    print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
+    #print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
+
+    node1_id = 4448539599
+    node2_id = 30729951
+    if accra_road.network.has_edge(node1_id, node2_id):
+        edge = accra_road.network[node1_id][node2_id]
+        attributes = edge.items()
+        for attr, value in attributes:
+            print(attr, ":", value)
+    else:
+        print("No edge found between the given nodes.")
+
+    node1_id = 30729951
+    node2_id = 4448539599
+    if accra_road.network.has_edge(node1_id, node2_id):
+        edge = accra_road.network[node1_id][node2_id]
+        attributes = edge.items()
+        for attr, value in attributes:
+            print(attr, ":", value)
+    else:
+        print("No edge found between the given nodes.")

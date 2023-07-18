@@ -44,7 +44,7 @@ class RoadNetwork3D():
             self.utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
             self.network = nx.DiGraph()
             self.weight_tool = WeightCalculation()
-            self.road_type = ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary','trunk_link', 'primary_link', 'secondary_link','tertiary_link']
+            self.road_type = ['residential', 'unclassified', 'service', 'primary', 'primary_link', 'trunk','trunk_link', 'secondary', 'secondary_link', 'tertiary','tertiary_link']
             self.all_tags = {} #All possible tags and its frequency of appearance in the road dataset.
 
             #Add all possible tags as keys and their frequency as values into self.all_tags
@@ -174,7 +174,7 @@ class RoadNetwork3D():
 
         self.road_type = list(set(self.road_type)) #remove duplicate elements
 
-    def print_road_type(self) -> None:
+    def rint_road_type(self) -> None:
         """
         Print the road types to be integrated.
 
@@ -354,6 +354,21 @@ class RoadNetwork3D():
         plt.grid(True)
         plt.show()
 
+    def get_3Droad(self) -> dict:
+        """
+        Get the 3D road json data 'self.road3D'.
+
+        Parameters
+        ----------
+        None
+         
+        Returns
+        -------
+        self.road3D: dict
+            'self.road3D' is the integrated json data, which is in dictionary format.
+        """
+        return self.road3D 
+
     def integrate(self) -> None:
         """
         Integrate the 2D road network json data with elevation data into a 3D road network json data.
@@ -391,16 +406,33 @@ class RoadNetwork3D():
 
                 for way in tqdm(self.road3D, desc='Integrating data', unit='item'):
                     if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
+
                         # Ensure the roads to be integrated is within the elevation data bound.
                         if (way['bounds']['maxlat'] > self.ele_bound[0]
                             or way['bounds']['minlat'] < self.ele_bound[1]
                             or way['bounds']['maxlon'] > self.ele_bound[3]
                             or way['bounds']['minlon'] < self.ele_bound[2]):
                             raise ValueError("The road data beyond the bound of elevation data, please reduce the selected road types.")
+
+                        # Add speed attribute in each road segment
+                        if 'maxspeed' in way['tags']:
+                            way['tags']['speed'] = float(''.join(filter(str.isdigit, way['tags']['maxspeed']))) #Extract the digit part of maxspeed, eg:"30 mph" will become 30(float)
+                        else:
+                            if way['tags']['highway'] in ['primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link', 'unclassified']:
+                                way['tags']['speed'] = 50
+                            elif way['tags']['highway'] in ['motorway']:
+                                way['tags']['speed'] = 100
+                            elif way['tags']['highway'] in ['residential']:
+                                way['tags']['speed'] = 30
+                            else:
+                                way['tags']['speed'] = 20
+
                         node_ids = way['nodes']
                         #Get the coordinates of each point in each road segment: (lon, lat)
                         coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat']) for node_index, node_id in enumerate(node_ids)]
                         x_values, y_values = zip(*coordinates)
+                        
+                        #processing each point in every road segment
                         for node_index, node_id in enumerate(node_ids):
                             easting, northing = utm_converter(x_values[node_index], y_values[node_index])
                             #find the index of the elevation grid for this point
@@ -445,7 +477,7 @@ class RoadNetwork3D():
                             way['geometry'][node_index]['ele'] = elevation_cur
                 self.flag_3D = 1
         except ValueError:
-            print('The road data beyond the bound of elevation data, please reduce the selected road types.')
+            print('Something went wrong when integrating road data.')
 
     def get_closest_point(self,city:City) -> int:
         """
@@ -503,7 +535,8 @@ class RoadNetwork3D():
                             else:
                                 self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
                                                 distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
-                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1])
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1]),
+                                                time = self.weight_tool.travel_time(coordinates[node_index], coordinates[node_index+1], way['tags']['speed'])
                                                 )
                                 nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
                     else:
@@ -515,7 +548,8 @@ class RoadNetwork3D():
                             else:
                                 self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
                                                 distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
-                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1])
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1]),
+                                                time = self.weight_tool.travel_time(coordinates[node_index], coordinates[node_index+1], way['tags']['speed'])
                                 ) 
                                 nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
                         
@@ -530,10 +564,26 @@ class RoadNetwork3D():
                             else:
                                 self.network.add_edges_from([(node_id, node_ids[node_index+1])], 
                                                 distance = self.weight_tool.distance(coordinates[node_index], coordinates[node_index+1]),
-                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1]) 
+                                                slope = self.weight_tool.slope(coordinates[node_index], coordinates[node_index+1]),
+                                                time = self.weight_tool.travel_time(coordinates[node_index], coordinates[node_index+1], way['tags']['speed'])
                                 )
                                 nx.set_node_attributes(self.network, {node_id:(x_values[node_index], y_values[node_index], z_values[node_index])}, 'coordinate')
             self.flag_network = 1
+
+    def get_network(self) -> nx.DiGraph:
+        '''
+        Give the user access to self.network
+
+        Parameters
+        ----------
+        None
+
+        Return
+        ------
+        nx.Digraph
+            The network of the area.
+        '''
+        return self.network
 
     def get_shortest_path(self, city1:City, city2:City, weight:str = 'distance') -> List[int]:
         """
@@ -612,6 +662,7 @@ if __name__ == '__main__':
     path2 = '../data/elevation/n05_w001_1arc_v3.tif' #This is the data of the elevation of Ghana
     accra_road = RoadNetwork3D(path1, path2)
     accra_road.integrate()
+    # accra_road.print_data(0)
     accra_road.create_network()
 
     #accra_road.add_road_type(['unclassified', 'residential', 'tertiary', 'tertiary_link', 'secondary', 'trunk', 'service', 'primary', 'trunk_link', 'primary_link', 'secondary_link', 'footway', 'raceway', 'path', 'track', 'pedestrian', 'steps', 'motorway_link', 'motorway', 'construction', 'services', 'passing_place', 'corridor', 'living_street'])
@@ -626,13 +677,20 @@ if __name__ == '__main__':
 
     # kotoka_airport = City(813329.05, 620518.36, None)
     # uni_ghana = City(811795.639, 625324.503, None)
+    # accra_zoo = City(5.625143099493793, -0.202923916977945, None)
+
     # random_position_1 = City(814795.639, 635324.503, None)
     # random_position_2 = City(813929.05, 620018.36, None)
 
-    # print(accra_road.get_closest_point(kotoka_airport))
+    # accra_network = accra_road.get_network()
+    #print(accra_network.nodes[403307333])
+    #print(accra_road.get_closest_point(kotoka_airport))
+    #print(accra_network.nodes[4033074333])
     # print(accra_road.get_shortest_path(kotoka_airport, uni_ghana))
+    # accra_road.draw_2Droad()
     # print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana))
     #print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
+
 
     # node1_id = 4448539599
     # node2_id = 30729951

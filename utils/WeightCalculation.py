@@ -14,8 +14,9 @@ class WeightCalculation():
         slope = (start[2] - end[2])/ np.sqrt((start[0]-end[0])**2 + (start[1]-end[1])**2)
         return slope
 
-    def travel_time(self):
-        pass
+    def travel_time(self, start, end, speed):
+        travel_time = self.distance(start, end) / speed*(1+self.slope(start, end))
+        return travel_time
 
     def battery_consumption(self):
         pass

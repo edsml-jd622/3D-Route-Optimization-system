@@ -1,21 +1,44 @@
+from typing import List
+import pyproj
+
 class City():
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
+    def __init__(self, x:float, y:float, z:float=0, zone:int = 30, lat_lon=False):
+        if lat_lon:
+            if -180<x<180 or -85<y<85:
+                utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
+                y, x = utm_converter(y, x)
+            self.x = y
+            self.y = x
+        else:
+            if -180<x<180 or -85<y<85:
+                utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
+                x, y = utm_converter(x, y)
+            self.x = x
+            self.y = y
         self.z = z
-        self.coordinates = [x, y, z]
+        self.coordinates = [self.x, self.y, self.z]
     
-    def change_coordinates(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z - z
-        self.coordinates = [x, y, z]
+    def change_coordinates(self, x:float, y:float, z:float=0, zone:int=30, lat_lon=False):
+        if lat_lon:
+            if -180<x<180 or -85<y<85:
+                utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
+                y, x = utm_converter(y, x)
+            self.x = y
+            self.y = x
+        else:
+            if -180<x<180 or -85<y<85:
+                utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
+                x, y = utm_converter(x, y)
+            self.x = x
+            self.y = y
+        self.z = z
+        self.coordinates = [self.x, self.y, self.z]
     
-    def get_coordinates(self):
+    def get_coordinates(self) -> List[float]:
         return self.coordinates
 
 if __name__ == '__main__':
-    city1 = City(1,2,3)
-    print(city1.get_coordinates())
-    city1.change_coordinate(4,5,6)
-    print(city1.get_coordinats())
+    accra_zoo = City(5.625279092167783, -0.20306731748089998, lat_lon=True)
+    kotoka_airport = City(-0.1716731521848131,5.6053060689188)
+    print(accra_zoo.get_coordinates())
+    print(kotoka_airport.get_coordinates())

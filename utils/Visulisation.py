@@ -7,9 +7,9 @@ from City import City
 class Visulisation():
     def __init__(self) -> None:
         pass
-    def show_route(self, G:nx.DiGraph, road2D:dict, nodes_list:List[int], offset_pos_marker:float=50) -> None:
+    def show_route(self, G:nx.DiGraph, road3D:dict, nodes_list:List[int], offset_pos_marker:float=50) -> None:
         fig, ax = plt.subplots(figsize=[10, 7])
-        for way in road2D:
+        for way in road3D:
             if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']:
                 node_ids = way['nodes']
                 #Get the coordinates of each point in each road segment: (lon, lat)
@@ -47,8 +47,8 @@ if __name__ == '__main__':
     accra_road.integrate()
     accra_road.create_network()
     
-    accra_zoo = City(5.625279092167783, -0.20306731748089998, lat_lon=True)
-    kotoka_airport = City(813329.05, 620518.36, None)
+    accra_zoo = City(5.625279092167783, -0.20306731748089998, lon_lat=False)
+    kotoka_airport = City(813329.05, 620518.36, None, lon_lat=True)
     shortest_path = accra_road.get_shortest_path(kotoka_airport, accra_zoo, weight='time')
 
 

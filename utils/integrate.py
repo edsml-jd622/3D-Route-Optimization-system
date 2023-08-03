@@ -496,11 +496,13 @@ class RoadNetwork3D():
         min_distance = float('inf')
         coordinate = city.get_coordinates()
         target = None
+        target_coor = None
         for (p,c) in self.network.nodes(data=True):
             if ((coordinate[0]-c['coordinate'][0])**2 + (coordinate[1]-c['coordinate'][1])**2) < min_distance:
                 min_distance = (coordinate[0]-c['coordinate'][0])**2 + (coordinate[1]-c['coordinate'][1])**2
                 target = p
-        return target
+                target_coor = c
+        return target, target_coor
 
     def create_network(self) -> None:
         """
@@ -604,8 +606,8 @@ class RoadNetwork3D():
         List[int]:
             The list contain all the node's id on the shortest path.
         """
-        city1_closest = self.get_closest_point(city1)
-        city2_closest = self.get_closest_point(city2)
+        city1_closest, _ = self.get_closest_point(city1)
+        city2_closest, _ = self.get_closest_point(city2)
         path = nx.shortest_path(self.network, source=city1_closest, target=city2_closest, weight=weight)
         return path
     
@@ -627,8 +629,8 @@ class RoadNetwork3D():
         float:
             The distance of the shortest path.
         """
-        city1_closest = self.get_closest_point(city1)
-        city2_closest = self.get_closest_point(city2)
+        city1_closest, _ = self.get_closest_point(city1)
+        city2_closest, _ = self.get_closest_point(city2)
         path_length = nx.shortest_path_length(self.network, source=city1_closest, target=city2_closest, weight=weight)
         return path_length
     
@@ -664,6 +666,7 @@ if __name__ == '__main__':
     accra_road.integrate()
     # accra_road.print_data(0)
     accra_road.create_network()
+    #accra_road.draw_2Droad()
 
     #accra_road.add_road_type(['unclassified', 'residential', 'tertiary', 'tertiary_link', 'secondary', 'trunk', 'service', 'primary', 'trunk_link', 'primary_link', 'secondary_link', 'footway', 'raceway', 'path', 'track', 'pedestrian', 'steps', 'motorway_link', 'motorway', 'construction', 'services', 'passing_place', 'corridor', 'living_street'])
     #accra_road.integrate()
@@ -675,21 +678,26 @@ if __name__ == '__main__':
     # #accra_road.print_data(1000)
     # #accra_road.draw_2Droad()
 
-    # kotoka_airport = City(813329.05, 620518.36, None)
-    # uni_ghana = City(811795.639, 625324.503, None)
-    # accra_zoo = City(5.625143099493793, -0.202923916977945, None)
+    kotoka_airport = City(813329.05, 620518.36, None, lon_lat=True)
+    uni_ghana = City(811795.639, 625324.503, None, lon_lat=True)
+    accra_zoo = City(5.625143099493793, -0.202923916977945, None, lon_lat=True)
 
-    # random_position_1 = City(814795.639, 635324.503, None)
-    # random_position_2 = City(813929.05, 620018.36, None)
+    random_position_1 = City(5.5, -0.5, None)
+    random_position_2 = City(813929.05, 620018.36, None, lon_lat=True)
 
     # accra_network = accra_road.get_network()
     #print(accra_network.nodes[403307333])
-    #print(accra_road.get_closest_point(kotoka_airport))
+    # print(kotoka_airport.get_coordinates())
+    # print(accra_road.get_closest_point(kotoka_airport))
+    # print(uni_ghana.get_coordinates())
+    # print(accra_road.get_closest_point(uni_ghana))
+    # print(random_position_1.get_coordinates())
+    # print(accra_road.get_closest_point(random_position_1))
     #print(accra_network.nodes[4033074333])
     # print(accra_road.get_shortest_path(kotoka_airport, uni_ghana))
     # accra_road.draw_2Droad()
     # print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana))
-    #print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
+    print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
 
 
     # node1_id = 4448539599

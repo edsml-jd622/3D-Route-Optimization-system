@@ -1,0 +1,82 @@
+% Document class `report-template` accepts either project-plan or final-report option in [].
+\documentclass[final-report]{report-template}
+
+% Packages I use in my report.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{blindtext}
+
+% Directory where I saved my figures.
+\graphicspath{{./figures/}}
+
+% Metadata used for the title page - please modify.
+\university{Imperial College London}
+\department{Department of Earth Science and Engineering}
+\course{MSc in Environmental Data Science and Machine Learning}
+\title{Building a route optimisation system that takes elevation into consideration}
+\author{Jinsong Dong}
+\email{jinsong.dong22@imperial.ac.uk}
+\githubusername{edsml-jd622}
+\supervisors{Sesinam Dagadu\\
+             Dr. Yves Plancherel}
+\repository{https://github.com/ese-msc-2022/irp-jd622}
+
+\begin{document}
+
+\maketitlepage  % generate title page
+
+% Abstract
+\section* {Abstract}
+Roughly 200-word.
+
+% Introduction section
+\section {Introduction}
+\subsection {Discription of the problem}
+Summary of the problem.\\
+Brief literature review.\\
+Objectives and Hypotheses.\\
+Tasks.\\
+\subsection {Literature Review}
+State-of-the-art solutions to the problem (including commercial and academic approaches).\\
+How my project go beyond the state-of-the-art solutions, and original work I've done.\\
+
+\section {Methods}
+Technical back-end of solutions, describe if it is standalone code or an extension of a pre-existing code and ecosystem I made.\\
+List development, operation tools, development methodologies, why.\\
+Architectural design diagram of your solution if relevant.\\
+Design rationale, implementation strategy, data structure, routine, verification and validation.\\
+Algorithm, pseudo-code.\\
+Creativity\\
+Implementation platform, programming language, libraries.\\
+
+\subsection {Building 3D road network}
+Collecting 2D road information from OpenstreetMap, collecting elevation data from **** website. 
+Integrate these two information tegother to do interpolation so that every node has assigned its elevation value.
+!The figure to show how to do interpolation.
+The integrate 3D road data is in json format.
+
+Building network based on the point, tag data of the 3D road json file with NetworkX to build a graph network.
+This network can be used to calculate several information between any pairs of points in the graph.
+Information including 2D distance, 3D distance, traveling time. And this information can be added according to the purpose of the user.
+
+\subsection {Pointer Network for TSP problem of 3D road network}
+
+
+
+
+\section {Results}
+Quantify the results.\\
+
+\section {Discussion and Conclusions}
+The most difficult tasks to resolve.\\
+Strengths and limitations.\\
+Next steps.\\
+
+
+
+
+% References
+\bibliographystyle{unsrt}
+\bibliography{references}  % BibTeX references are saved in references.bib
+
+\end{document}          

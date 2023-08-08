@@ -279,80 +279,11 @@ class RoadNetwork3D():
         formatted_data = json.dumps(self.road3D[index], indent=4)
         print(formatted_data)
 
-    def draw_3Droad(self, way_list:list = ['primary']) -> None: 
-        """
-        Draw the 3D road network, user can choose which types of road to draw.
-        Types include: 'primary','secondary', 'tertiary', 'residential', 'trunk', 'service', 'unclassified'
+    def get_elevation(self) -> np.ndarray:
+        return self.elevation
 
-        Parameters
-        ----------
-        way_list : list, optional
-            The list contains all the road types the user want to see(default is ['primary']).
-
-        Returns
-        -------
-        None
-            This function does not return any value.
-        """
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-
-        for way in self.road3D:
-            if (way['type'] == 'way' 
-            and 'tags' in way 
-            and 'highway' in way['tags'] 
-            and way['tags']['highway'] in way_list):
-                node_ids = way['nodes']
-                coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat'], way['geometry'][node_index]['ele']) for node_index, node_id in enumerate(node_ids)]
-                
-                x_values, y_values, z_values = zip(*coordinates)
-                
-                cmap = plt.cm.coolwarm  # Choose a colormap (you can use any colormap you prefer)
-                normalized_elevation = (z_values - min(z_values)) / (max(z_values) - min(z_values))  # Normalize the elevation values to [0, 1]
-                colors = [cmap(value) for value in normalized_elevation]
-
-                for i in range(len(x_values) - 1):
-                    ax.plot([x_values[i], x_values[i+1]], [y_values[i], y_values[i+1]], [z_values[i], z_values[i+1]], color=colors[i], linewidth=0.5)
-
-        ax.set_xlabel('Longitude')
-        ax.set_ylabel('Latitude')
-        ax.set_zlabel('Elevation')
-        ax.set_title('Way Elements (3D)')
-        #ax.view_init(20, 45)
-        plt.show()
-
-    def draw_2Droad(self, way_list:List[str] = ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']) -> None:
-        """
-        Draw the 2D road network, user can choose which types of road to draw.
-        Types include: 'primary','secondary', 'tertiary', 'residential', 'trunk', 'service', 'unclassified'
-
-        Parameters
-        ----------
-        way_list : list, optional
-            The list contains all the road types the user want to see(default is ['residential','service','unclassified','primary', 'trunk', 'secondary', 'tertiary']).
-
-        Returns
-        -------
-        None
-            This function does not return any value.
-        """
-        for way in self.road2D:
-            if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in way_list:
-                node_ids = way['nodes']
-                #Get the coordinates of each point in each road segment: (lon, lat)
-                coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat']) for node_index, node_id in enumerate(node_ids)]
-                
-                x_values, y_values = zip(*coordinates)
-                if 'tags' in way and 'access' in way['tags'] and way['tags']['access']=='private':
-                    plt.plot(x_values, y_values, 'r-', linewidth = 0.5)
-                else:
-                    plt.plot(x_values, y_values, 'b-', linewidth = 0.3)
-
-        plt.xlabel('Longitude')
-        plt.ylabel('Latitude')
-        plt.title('Way Elements')
-        plt.grid(True)
-        plt.show()
+    def get_elebound(self) -> List[int]:
+        return self.ele_bound
 
     def get_3Droad(self) -> dict:
         """
@@ -368,6 +299,24 @@ class RoadNetwork3D():
             'self.road3D' is the integrated json data, which is in dictionary format.
         """
         return self.road3D 
+
+    def get_roadtype(self) -> List[str]:
+        return self.road_type
+
+    def get_2Droad(self) -> dict:
+        """
+        Get the 2D road json data 'self.road2D'.
+
+        Parameters
+        ----------
+        None
+         
+        Returns
+        -------
+        self.road2D: dict
+            'self.road2D' is the json data that has not been integrated, which is in dictionary format.
+        """
+        return self.road2D 
 
     def integrate(self) -> None:
         """
@@ -390,10 +339,6 @@ class RoadNetwork3D():
             if self.flag_3D:
                 print('The data has been integrated, no need to integrate it again.')
             else:
-                min_i = 10000
-                max_i = 0
-                min_j = 10000
-                max_j = 0
                 pixel_number_lat = self.elevation.shape[0]
                 pixel_number_lon = self.elevation.shape[1]
 
@@ -438,11 +383,6 @@ class RoadNetwork3D():
                             #find the index of the elevation grid for this point
                             i = int((easting - left_bound) // pixel_length_lon)
                             j = int((up_bound - northing) // pixel_length_lat)
-                            
-                            min_i = min(min_i, i)
-                            min_j = min(min_j, j)
-                            max_i = max(max_i, i)
-                            max_j = max(max_j, j)
 
                             #get the coordinate of the center of the grid
                             x_grid = i*pixel_length_lon + pixel_length_lon/2 + left_bound

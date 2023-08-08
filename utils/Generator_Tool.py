@@ -1,5 +1,5 @@
 import random
-from integrate import RoadNetwork3D
+from Road_Network import RoadNetwork3D
 from City import City
 import pprint
 import itertools
@@ -26,12 +26,11 @@ def tsp_bruteforce(distance_matrix):
     min_distance = float('inf')
     best_path = []
 
-    # 枚举所有可能的路径
-    for path in itertools.permutations(range(num_locations)):
+    for path in itertools.permutations(range(num_locations)):  # Enumerate all possible paths
         total_distance = 0
         for i in range(num_locations - 1):
             total_distance += distance_matrix[path[i]][path[i+1]]
-        total_distance += distance_matrix[path[-1]][path[0]]  # 回到起点
+        total_distance += distance_matrix[path[-1]][path[0]]  # Get back to the start point
 
         if total_distance < min_distance:
             min_distance = total_distance
@@ -41,7 +40,7 @@ def tsp_bruteforce(distance_matrix):
 
 
 if __name__ == '__main__':
-    path1 = '../data/accra_road.json'
+    path1 = '../data/accra_road.json'  #This is the data of the 2d road of Ghana
     path2 = '../data/elevation/n05_w001_1arc_v3.tif' #This is the data of the elevation of Ghana
     accra_road = RoadNetwork3D(path1, path2)
     accra_road.integrate()

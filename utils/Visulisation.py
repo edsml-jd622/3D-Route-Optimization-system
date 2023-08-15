@@ -66,6 +66,9 @@ class Visulisation():
 
         #Draw all roads in blue lines
         for way in self.road3D: 
+            if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                # Skip the ways that has no access
+                continue
             if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.roadtype:
                 node_ids = way['nodes']
                 #Get the coordinates of each point in each road segment: (lon, lat)
@@ -128,6 +131,9 @@ class Visulisation():
         ax = fig.add_subplot(111, projection='3d')
 
         for way in self.road3D:
+            if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                # Skip the ways that has no access
+                continue
             if (way['type'] == 'way' 
             and 'tags' in way 
             and 'highway' in way['tags'] 
@@ -167,6 +173,9 @@ class Visulisation():
             This function does not return any value.
         """
         for way in self.road2D:
+            if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                # Skip the ways that has no access
+                continue
             if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in way_list:
                 node_ids = way['nodes']
                 #Get the coordinates of each point in each road segment: (lon, lat)
@@ -192,11 +201,28 @@ if __name__ == '__main__':
     accra_road.integrate()
     accra_road.create_network()
     
-    accra_zoo = City(5.625279092167783, -0.20306731748089998, lon_lat=False)
-    kotoka_airport = City(813329.05, 620518.36, None, lon_lat=True)
-    uni_ghana = City(811795.639, 625324.503, None, lon_lat=True)
-    shortest_path = accra_road.get_shortest_path(kotoka_airport, uni_ghana, weight='time')
+    kotoka_airport = City(5.605522862563998, -0.17187326099346129, None, lon_lat=False)
+    uni_ghana = City(5.650618146052781, -0.18703194651322047, None, lon_lat=False)
+    accra_zoo = City(5.625370802046447, -0.20300362767245603, None, lon_lat=False)
+    national_museum = City(5.560739525028722, -0.20650512945516059, None, lon_lat=False)
+
+    shortest_path = accra_road.get_shortest_path(kotoka_airport, uni_ghana, weight='distance')
 
     visual = Visulisation(accra_road)
     #visual.draw_2Droad()
     visual.show_route(shortest_path, ele_back=True)
+
+    print("Time: ")
+    print("--------")
+    print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='time')) #9min
+    print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='time')) #15min
+    print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='time')) #13min
+    print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='time')) #22min
+    print(accra_road.get_shortest_path_length(accra_zoo, national_museum, weight='time')) #21min
+    print("Distance: ")
+    print("--------")
+    print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='distance')) #6.5km
+    print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='distance')) #7.7km
+    print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='distance')) #7.4km
+    print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='distance')) #6.8km
+    print(accra_road.get_shortest_path_length(accra_zoo, national_museum, weight='distance')) #9.7km

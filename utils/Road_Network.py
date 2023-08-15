@@ -13,7 +13,7 @@ from City import City
 from collections import Counter
 from pprint import pprint
 from tqdm import tqdm
-from WeightCalculation import WeightCalculation
+from CostFunctions import CostFunctions
 
 class RoadNetwork3D():
     def __init__(self, path1:str, path2:str, ele_bound:List[int] = [6,5,-1,0], zone:int = 30) -> None:
@@ -43,7 +43,7 @@ class RoadNetwork3D():
             self.road3D = copy.deepcopy(self.road2D)
             self.utm_converter = pyproj.Proj(proj='utm', zone=zone, ellps='WGS84')
             self.network = nx.DiGraph()
-            self.weight_tool = WeightCalculation()
+            self.weight_tool = CostFunctions()
             self.road_type = ['residential', 'unclassified', 'service', 'primary', 'primary_link', 'trunk','trunk_link', 'secondary', 'secondary_link', 'tertiary','tertiary_link']
             self.all_tags = {} #All possible tags and its frequency of appearance in the road dataset.
 
@@ -174,7 +174,7 @@ class RoadNetwork3D():
 
         self.road_type = list(set(self.road_type)) #remove duplicate elements
 
-    def rint_road_type(self) -> None:
+    def print_road_type(self) -> None:
         """
         Print the road types to be integrated.
 
@@ -350,6 +350,9 @@ class RoadNetwork3D():
                 pixel_length_lon = (right_bound - left_bound) / pixel_number_lon # The length of each pixel in self.elevation along the longitude direction
 
                 for way in tqdm(self.road3D, desc='Integrating data', unit='item'):
+                    if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                        # Skip the ways that has no access
+                        continue
                     if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
 
                         # Ensure the roads to be integrated is within the elevation data bound.
@@ -363,7 +366,7 @@ class RoadNetwork3D():
                         if 'maxspeed' in way['tags']:
                             way['tags']['speed'] = float(''.join(filter(str.isdigit, way['tags']['maxspeed']))) #Extract the digit part of maxspeed, eg:"30 mph" will become 30(float)
                         else:
-                            if way['tags']['highway'] in ['primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link', 'unclassified']:
+                            if way['tags']['highway'] in ['primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link']:
                                 way['tags']['speed'] = 50
                             elif way['tags']['highway'] in ['motorway']:
                                 way['tags']['speed'] = 100
@@ -462,6 +465,9 @@ class RoadNetwork3D():
             print('The network has been created, no need to do it again.')
         else:
             for way in tqdm(self.road3D, desc='Creating network: ', unit='item'):
+                if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                    # Skip the ways that has no access
+                    continue
                 if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
                     node_ids = way['nodes']
                     #Get the coordinates of each point in each road segment: (lon, lat)
@@ -604,58 +610,19 @@ if __name__ == '__main__':
     path2 = '../data/elevation/n05_w001_1arc_v3.tif' #This is the data of the elevation of Ghana
     accra_road = RoadNetwork3D(path1, path2)
     accra_road.integrate()
-    # accra_road.print_data(0)
     accra_road.create_network()
-    #accra_road.draw_2Droad()
 
-    #accra_road.add_road_type(['unclassified', 'residential', 'tertiary', 'tertiary_link', 'secondary', 'trunk', 'service', 'primary', 'trunk_link', 'primary_link', 'secondary_link', 'footway', 'raceway', 'path', 'track', 'pedestrian', 'steps', 'motorway_link', 'motorway', 'construction', 'services', 'passing_place', 'corridor', 'living_street'])
-    #accra_road.integrate()
-    #accra_road.print_road_type()
-    # accra_road.delete_road_type(['new', 'primary'])
-    # accra_road.print_road_type()
-    # accra_road.integrate()
-    # accra_road.create_network()
-    # #accra_road.print_data(1000)
-    # #accra_road.draw_2Droad()
+    kotoka_airport = City(5.606245608959031, -0.1733563315403809, None, lon_lat=False)
+    uni_ghana = City(5.650320731540692, -0.19627312529607963, None, lon_lat=False)
+    accra_zoo = City(5.625143099493793, -0.202923916977945, None, lon_lat=False)
+    national_museum = City(5.56247315167632, -0.2066102816554413, None, lon_lat=False)
 
-    kotoka_airport = City(813329.05, 620518.36, None, lon_lat=True)
-    uni_ghana = City(811795.639, 625324.503, None, lon_lat=True)
-    accra_zoo = City(5.625143099493793, -0.202923916977945, None, lon_lat=True)
+    print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='distance'))
+    print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='time'))
+    print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='time'))
+    print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='time'))
+    print(accra_road.get_shortest_path_length(accra_zoo, national_museum, weight='time'))
 
-    random_position_1 = City(5.5, -0.5, None)
-    random_position_2 = City(813929.05, 620018.36, None, lon_lat=True)
-
-    # accra_network = accra_road.get_network()
-    #print(accra_network.nodes[403307333])
-    # print(kotoka_airport.get_coordinates())
-    # print(accra_road.get_closest_point(kotoka_airport))
-    # print(uni_ghana.get_coordinates())
-    # print(accra_road.get_closest_point(uni_ghana))
-    # print(random_position_1.get_coordinates())
-    # print(accra_road.get_closest_point(random_position_1))
-    #print(accra_network.nodes[4033074333])
-    # print(accra_road.get_shortest_path(kotoka_airport, uni_ghana))
     # accra_road.draw_2Droad()
     # print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana))
-    print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))
-
-
-    # node1_id = 4448539599
-    # node2_id = 30729951
-    # if accra_road.network.has_edge(node1_id, node2_id):
-    #     edge = accra_road.network[node1_id][node2_id]
-    #     attributes = edge.items()
-    #     for attr, value in attributes:
-    #         print(attr, ":", value)
-    # else:
-    #     print("No edge found between the given nodes.")
-
-    # node1_id = 30729951
-    # node2_id = 4448539599
-    # if accra_road.network.has_edge(node1_id, node2_id):
-    #     edge = accra_road.network[node1_id][node2_id]
-    #     attributes = edge.items()
-    #     for attr, value in attributes:
-    #         print(attr, ":", value)
-    # else:
-    #     print("No edge found between the given nodes.")
+    # print(accra_road.weight_matrix([kotoka_airport, uni_ghana, random_position_1, random_position_2]))

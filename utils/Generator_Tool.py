@@ -1,10 +1,33 @@
 import random
 from Road_Network import RoadNetwork3D
+import numpy as np
+from typing import List
 from City import City
 import pprint
 import itertools
 
-def generate_random_CityWeight(G, bound_list=[6,5,-1,0], num_city=5):
+def generate_random_CityWeight(G: RoadNetwork3D, bound_list: List[int]=[6,5,-1,0], num_city: int=5):
+    '''
+    Generate 5 random locations and return their coordinates and adjacent matrix.
+
+    Parameters
+    ----------
+    G: RoadNetwork3D,
+        The network graph.
+    bound_list: List[int] (optional),
+        The boundary of the graph.
+        The default values is [6, 5, -1, 0] which is specially for Accra area
+    num_city: int (optional),
+        The number of locations to generate.
+        The defalt value is 5.
+    
+    Returns
+    -------
+    coor_list: List[Tuple[float]],
+        The coordinates list of the locations generated.
+    weight: np.ndarray, 
+        The 2D array of the adjacent matrix of the locations generated.
+    '''
     coor_list = []
     city_list = []
     for i in range(num_city):
@@ -21,7 +44,22 @@ def generate_random_CityWeight(G, bound_list=[6,5,-1,0], num_city=5):
     return coor_list, weight
 
 
-def tsp_bruteforce(distance_matrix):
+def tsp_bruteforce(distance_matrix: np.ndarray):
+    '''
+    Use brute-force method to solve Traveling Salesman Problem(TSP) given a certain adjacent matrix.
+
+    Parameters
+    ----------
+    distance_matrix: np.ndarray,
+        The adjacent matrix for a seires of locations.
+    
+    Returns
+    -------
+    best_path: List[int],
+        The list of index for the optimal route (The optimal answer of TSP).
+    min_distance: float,
+        The distance of the optimal route.
+    '''
     num_locations = len(distance_matrix)
     min_distance = float('inf')
     best_path = []

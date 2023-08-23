@@ -9,11 +9,11 @@ import geopandas as gpd
 import pyproj
 from mpl_toolkits.mplot3d import Axes3D
 import networkx as nx
-from City import City
+from .City import City
 from collections import Counter
 from pprint import pprint
 from tqdm import tqdm
-from CostFunctions import CostFunctions
+from .CostFunctions import CostFunctions
 
 class RoadNetwork3D():
     def __init__(self, path1:str, path2:str, ele_bound:List[int] = [6,5,-1,0], zone:int = 30) -> None:
@@ -280,10 +280,34 @@ class RoadNetwork3D():
         print(formatted_data)
 
     def get_elevation(self) -> np.ndarray:
-        return self.elevation
+        """
+        Get the elevation data from 'self.elevation'.
+
+        Parameters
+        ----------
+        None
+         
+        Returns
+        -------
+        self.elevation: np.ndarray
+            'self.elevation' is the raster elevation data, which is in 2D np.ndarray format.
+        """
+        return copy.deepcopy(self.elevation)
 
     def get_elebound(self) -> List[int]:
-        return self.ele_bound
+        """
+        Get the boundary of elevation data from 'self.ele_bound'.
+
+        Parameters
+        ----------
+        None
+         
+        Returns
+        -------
+        self.ele_bound: List[int]
+            'self.ele_bound' is the list of boundary for elevation data, which is in List[int] format, [lat(N), lat(S), lon(W), lon(E)].
+        """
+        return copy.deepcopy(self.ele_bound)
 
     def get_3Droad(self) -> dict:
         """
@@ -298,10 +322,22 @@ class RoadNetwork3D():
         self.road3D: dict
             'self.road3D' is the integrated json data, which is in dictionary format.
         """
-        return self.road3D 
+        return copy.deepcopy(self.road3D)
 
     def get_roadtype(self) -> List[str]:
-        return self.road_type
+        """
+        Get the roadtype that need to be manipulated from 'self.road_type.
+
+        Parameters
+        ----------
+        None
+         
+        Returns
+        -------
+        self.road_type: List[str]
+            'self.road_type' is the list of str represent road types need to be manipulated(integrate, create network).
+        """
+        return copy.deepcopy(self.road_type)
 
     def get_2Droad(self) -> dict:
         """
@@ -343,8 +379,11 @@ class RoadNetwork3D():
                 pixel_number_lon = self.elevation.shape[1]
 
                 utm_converter = pyproj.Proj(proj='utm', zone=30, ellps='WGS84')
-                left_bound, up_bound = utm_converter(self.ele_bound[2], self.ele_bound[0])
-                right_bound, down_bound = utm_converter(self.ele_bound[3], self.ele_bound[1])
+                if self.ele_bound[0] <= 180:
+                    left_bound, up_bound = utm_converter(self.ele_bound[2], self.ele_bound[0])
+                    right_bound, down_bound = utm_converter(self.ele_bound[3], self.ele_bound[1])
+                else:
+                    left_bound, up_bound, right_bound, down_bound = self.ele_bound[2], self.ele_bound[0], self.ele_bound[3], self.ele_bound[1]
 
                 pixel_length_lat = (up_bound - down_bound) / pixel_number_lat # The length of each pixel in self.elevation along the latitude direction
                 pixel_length_lon = (right_bound - left_bound) / pixel_number_lon # The length of each pixel in self.elevation along the longitude direction
@@ -356,7 +395,7 @@ class RoadNetwork3D():
                     if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
 
                         # Ensure the roads to be integrated is within the elevation data bound.
-                        if (way['bounds']['maxlat'] > self.ele_bound[0]
+                        if self.ele_bound[0]<=180 and (way['bounds']['maxlat'] > self.ele_bound[0]
                             or way['bounds']['minlat'] < self.ele_bound[1]
                             or way['bounds']['maxlon'] > self.ele_bound[3]
                             or way['bounds']['minlon'] < self.ele_bound[2]):
@@ -382,39 +421,45 @@ class RoadNetwork3D():
                         
                         #processing each point in every road segment
                         for node_index, node_id in enumerate(node_ids):
-                            easting, northing = utm_converter(x_values[node_index], y_values[node_index])
+                            if x_values[node_index] <= 180: #check what's the format of the coordinates
+                                easting, northing = utm_converter(x_values[node_index], y_values[node_index])
+                            else:
+                                easting, northing = x_values[node_index], y_values[node_index]
                             #find the index of the elevation grid for this point
                             i = int((easting - left_bound) // pixel_length_lon)
                             j = int((up_bound - northing) // pixel_length_lat)
+                            
+                            if i > 0 and j > 0 and i < pixel_length_lon-1 and j < pixel_length_lat-1: # make sure i and j is not at the edge of the elevation data.
+                                #get the coordinate of the center of the grid
+                                x_grid = i*pixel_length_lon + pixel_length_lon/2 + left_bound
+                                y_grid = up_bound - (j*pixel_length_lat + pixel_length_lat/2)
 
-                            #get the coordinate of the center of the grid
-                            x_grid = i*pixel_length_lon + pixel_length_lon/2 + left_bound
-                            y_grid = up_bound - (j*pixel_length_lat + pixel_length_lat/2)
+                                #Judge which part of the grid does the point exist on
+                                if easting > x_grid:
+                                    delta_i = 1
+                                else:
+                                    delta_i = -1
+                                if northing > y_grid:
+                                    delta_j = -1
+                                else:
+                                    delta_j = 1
 
-                            #Judge which part of the grid does the point exist on
-                            if easting > x_grid:
-                                delta_i = 1
+                                #calculate the distance of the point with the four grids surounding it.
+                                distance_A = np.sqrt((easting - ((i+delta_i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j+delta_j)*pixel_length_lat + pixel_length_lat/2)))**2)
+                                distance_B = np.sqrt((easting - ((i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j+delta_j)*pixel_length_lat + pixel_length_lat/2)))**2)
+                                distance_C = np.sqrt((easting - ((i+delta_i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j)*pixel_length_lat + pixel_length_lat/2)))**2)
+                                distance_D = np.sqrt((easting-x_grid)**2 + (northing-y_grid)**2)
+                                weight_total = 1/distance_A + 1/distance_B + 1/distance_C + 1/distance_D
+
+
+                                elevation_cur = (
+                                                1/distance_A/weight_total * self.elevation[j+delta_j][i+delta_i] +
+                                                1/distance_B/weight_total * self.elevation[j+delta_j][i] +
+                                                1/distance_C/weight_total * self.elevation[j][i+delta_i] +
+                                                1/distance_D/weight_total * self.elevation[j][i]
+                                                )
                             else:
-                                delta_i = -1
-                            if northing > y_grid:
-                                delta_j = -1
-                            else:
-                                delta_j = 1
-
-                            #calculate the distance of the point with the four grids surounding it.
-                            distance_A = np.sqrt((easting - ((i+delta_i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j+delta_j)*pixel_length_lat + pixel_length_lat/2)))**2)
-                            distance_B = np.sqrt((easting - ((i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j+delta_j)*pixel_length_lat + pixel_length_lat/2)))**2)
-                            distance_C = np.sqrt((easting - ((i+delta_i)*pixel_length_lon + pixel_length_lon/2 + left_bound))**2 + (northing - (up_bound - ((j)*pixel_length_lat + pixel_length_lat/2)))**2)
-                            distance_D = np.sqrt((easting-x_grid)**2 + (northing-y_grid)**2)
-                            weight_total = 1/distance_A + 1/distance_B + 1/distance_C + 1/distance_D
-
-
-                            elevation_cur = (
-                                            1/distance_A/weight_total * self.elevation[j+delta_j][i+delta_i] +
-                                            1/distance_B/weight_total * self.elevation[j+delta_j][i] +
-                                            1/distance_C/weight_total * self.elevation[j][i+delta_i] +
-                                            1/distance_D/weight_total * self.elevation[j][i]
-                                            )
+                                elevation_cur = self.elevation[j][i]
                             way['geometry'][node_index]['lon'] = easting
                             way['geometry'][node_index]['lat'] = northing
                             way['geometry'][node_index]['ele'] = elevation_cur
@@ -528,10 +573,10 @@ class RoadNetwork3D():
 
         Return
         ------
-        nx.Digraph
-            The network of the area.
+        self.network: nx.Digraph
+            The network of the area, in format of nx.Digraph.
         '''
-        return self.network
+        return copy.deepcopy(self.network)
 
     def get_shortest_path(self, city1:City, city2:City, weight:str = 'distance') -> List[int]:
         """
@@ -549,7 +594,7 @@ class RoadNetwork3D():
 
         Returns
         -------
-        List[int]:
+        path: List[int]
             The list contain all the node's id on the shortest path.
         """
         city1_closest, _ = self.get_closest_point(city1)
@@ -572,7 +617,7 @@ class RoadNetwork3D():
 
         Returns
         -------
-        float:
+        path_length: float
             The distance of the shortest path.
         """
         city1_closest, _ = self.get_closest_point(city1)
@@ -591,7 +636,7 @@ class RoadNetwork3D():
 
         Returns
         -------
-        np.ndarray:
+        ans: np.ndarray
             The matrix contain all weights of any pairs of Cities in the city_list.
         """       
         n = len(city_list)

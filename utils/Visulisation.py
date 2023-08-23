@@ -1,21 +1,26 @@
 from typing import List
 import networkx as nx
 import matplotlib.pyplot as plt
-from Road_Network import RoadNetwork3D
+from .Road_Network import RoadNetwork3D
 from matplotlib.gridspec import GridSpec
 import numpy as np
 import pyproj
 from matplotlib.cm import ScalarMappable
 
-from City import City
+from .City import City
 
 class Visulisation():
     def __init__(self, network:RoadNetwork3D) -> None:
-        self.G = network.get_network()
-        self.road2D = network.get_2Droad()
-        self.road3D = network.get_3Droad()
-        self.elevation = network.get_elevation()
-        self.roadtype = network.get_roadtype()
+        '''
+        network: RoadNetwork3D, the network contain integrated 3D road data and 3D network graph
+        '''
+        self.G = network.get_network() # Get the network graph
+        self.road2D = network.get_2Droad() # Get the 2D road data  
+        self.road3D = network.get_3Droad() # Get the 3D road data
+        self.elevation = network.get_elevation() # Get the elevation data
+        self.roadtype = network.get_roadtype() # Get the list of road types
+
+        # Find the coordinates boundary of road data
         max_lat = -100
         max_lon = -100
         min_lat = 100
@@ -27,9 +32,34 @@ class Visulisation():
                 max_lat = max(way['bounds']['maxlat'], max_lat)
                 max_lon = max(way['bounds']['maxlon'], max_lon)
         self.road_bound = [max_lat, min_lat, min_lon, max_lon]
-        self.ele_bound = network.get_elebound()
 
-    def show_route(self, nodes_list:List[int], ele_back:bool = True, line_width:float = 0.5, offset_pos_marker:float=50) -> None:
+        self.ele_bound = network.get_elebound() # Get the elevation boundary
+
+    def show_route(self, nodes_list:List[int], ele_back:bool = False, line_width:float = 0.5, offset_pos_marker:float=50) -> None:
+        """
+        Draw the 3D road network, show the path defined by user.
+
+        Parameters
+        ----------
+        nodes_list: List[int]
+            The list contains all the nodes on the path defined by user.
+        ele_back: bool(optional)
+            The switch of the mode to draw the 3D road. 
+            If True, the elevation data will show as the background of the 2D road data.
+            If False, the elevation data will be embedded in the roads.
+            The default value is False.
+        line_width: float(optional)
+            Control the line width of the roads drawn in the figure.
+            The default value is 0.5.
+        offset_pos_marker: float(optional)
+            Control the position of the text for start and end of the path.
+            The default value is 50.
+
+        Returns
+        -------
+        None
+            This function does not return any value.
+        """
         #fig, ax = plt.subplots(figsize=[10, 7])
         plt.figure(figsize=(10.3, 7))
         gs = GridSpec(1, 2, width_ratios=[10, 0.3], height_ratios=[1])

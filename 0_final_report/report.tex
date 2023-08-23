@@ -69,11 +69,22 @@ Some assumptions are raised in this research:
 \begin{itemize}
     \item The ratio of traffic to capacity is 0.5 for all road segments.
     \item There is no traffic light on the road.
-    \item Vehicles travels at the maximum speed specified for each road segment.
+    \item Vehicles travels at the maximum speed specified for each road segment with no traffic congestion in consideration.
 \end{itemize}
 
 \subsection {Literature Review}
-The route optimisation problem in this project is a kind of Travel Salesman Problem(TSP) \cite{lawler1985travelling}, 
+A route optimization problem for real-world road network can be divided by two parts generally.
+The first part is finding the shortest path problem, 
+which is finding a path between two intersections on a road map such that the sum of the distance of constituent road is minimized.
+For this part, the famous Dijkstra's algorithm\cite{Dijkstra:1959aa} based on the graph-theory is already a mature method.
+But Dijkstra can only solve the single-source shortest path problem  with non-negative edge weight.
+The Bellman–Ford algorithm\cite{bellman} can deal with the shortest path problem with negative edge weight, 
+but it is slower than Dijkstra algorithm.
+Some research has done for improving the computing efficiency of these algorithm\cite{journals/tpds/BusatoB16}.
+For a road network, distance is a non-negative weight, Dijkstra algorithm is a better choice.
+
+The second part is making route optimization. 
+The route optimization problem in this project is a kind of Travel Salesman Problem(TSP) \cite{lawler1985travelling}, 
 which means given a list of cities and distances between each pair of cities, what is the shortest possible
 route that visits each city exactly once and returns to the origin city \cite{TSP_wiki}. 
 TSP is a classic NP-hard problem, means it can not be solved in polynomial time.
@@ -102,16 +113,31 @@ Christofides algorithm has the limitation that it can only be applied on the ins
 Simulated annealing(SA) algorithm is a kind of greedy algorithms. It uses randomness as part of its search for the best solution, so it is a stochastic global search algorithm.
 Simulated annealing algorithm is good at jumping out of the local minimum\cite{improved_SA}.\\
 
-The algorithms mentioned above are mainly used on optimizing the shortest way to go, in addition to these, the work by Dijkstra based on the graph-theory also focus on the shortest path.
-Routing optimization has been extended into the domain of logistic, respective extensions are called VRP\cite{BRAEKERS2016300}, VRP not only optimize the distance between two single points,
+Some other research has been extended into the domain of logistic, 
+respective extensions are called Vehicle Routing Problem(VRP)\cite{BRAEKERS2016300}, 
+VRP not only optimize the distance between two single points,
 but also optimize the distances between a series points under different criterion and restrictions. 
-Some research extended VRP to green logistic, they optimize the fuel consumption and emissions\cite{green_vehicle}.
+Some research extended VRP to green logistic, 
+they optimize the fuel consumption and emissions\cite{green_vehicle}.
 Marc Schröder and Pedro Cabral\cite{article} build a model to estimate the $CO_2$ emissions for road freight transportation and found eco-friendly route can yield up to 20\% emissions reduction.
 Jiquan Wang\cite{battery_predict} develop an energy consumption prediction algorithm to make route optimisation for electric vehicles.
 
-These researches about the extensions of route optimisation did case studies on different areas like Korea and Portugal, they focused on freight trucks and electric vehicles.
-However, no one has done route optimisation for minimize battery consumption research for electric bikes, and no case study in Ghana yet. 
-This project will focus on the eco-friendly route optimization system on electric bikes, and make several case studies in Accra Ghana.
+Another way to handle TSP problem is using neural network method\cite{SHI2022681}.
+Hopfield neural network\cite{Hopfield:1985aa} is the first neural network for handling TSP, 
+which convert the objective function into the energy function of a fully connected neural network.
+Several research focused on how to improve Hopfiled method on its convergence\cite{Luo2019DesignAI} and performance\cite{10.1007/s00521-018-3535-9}\cite{improv_hop}.
+Graph neural network is also an architecture to solve TSP problem\cite{graph_neural} when dealing with graph data, 
+Because graph data is a complex data structure that fully connected network hardly to deal with.
+Neural network with reinforcement learning\cite{vanOtterlo2012} is a kind of method to solve sequential decision making problems.
+From the notable Pointer network proposed Vinyals\cite{vinyals2017pointer} which used attention mechanism to take attention as pointer, 
+many reinforcement networks based on it were developed such as graph pointer network with reinforcement\cite{ma2019combinatorial} 
+and graph point network with negative travel length as the reward signal\cite{bello2017neural}.
+
+The research about finding the shortest path mentioned above usually use 2D coordinate data format and none of them did the real-world case in Africa area.
+The research about route optimization with deep learning part mentioned above only use coordinates as the input data format, 
+this data format can only reflect the straight-line distance between locations which is not able to reflect the distance of the real-world road network.
+In this project, the path planing part is considered with 3D coordinates 
+and a small revision is made on Pointer Network so that it can use adjacent matrix as input data format to solve TSP problem on real-world network.
 
 \subsection{Code structure}
 The codes in this research are developed by Python, and encapsulated into several classes based on their functionality.
@@ -133,26 +159,13 @@ which is easier for calculating distance.
 Besides the codes drawn in the code structure figure, 
 there are also a class storing loss functions for calculating distance/travel time while creating network,
 a code script for generating dataset and a jupyter notebook containing codes to train the deep learning model.
-
-
-
 \begin{figure}[H]
     \begin{center}
         \includegraphics[width=1\textwidth]{code_structure.jpg}
     \end{center}
     \caption{\label{fig:code_struc} The code structure.}
 \end{figure}
-
 \section {Methods}
-Technical back-end of solutions, describe if it is standalone code or an extension of a pre-existing code and ecosystem I made.\\
-List development, operation tools, development methodologies, why.\\
-Architectural design diagram of your solution if relevant.\\
-Design rationale, implementation strategy, data structure, routine, verification and validation.\\
-Algorithm, pseudo-code.\\
-Creativity\\
-Implementation platform, programming language, libraries.\\
-
----------------------------------------------------------------\\
 \subsection {Integrate data for 3D road data}
 The target city of this research is Accra, Ghana, whose range of coordinates is 5.52N to 5.68N in latitude and 0.31W to 0.01E in longitude.
 The mainly essential data needed in this research is the 2D road information data and the elevation data. 
@@ -167,7 +180,6 @@ The value of the key 'tags' contains the attribute of each road segment, for exa
 The Fig.~\ref{fig:accra_road} shows the road type distribution of Accra, and Fig.~ \ref{fig:accra_access} shows the access distribution of Accra. 
 The road type of road segments has significant influence on the travel time calculation in later chapter as there are different speed limit for different road type.
 The access type determines wether a road segment can be used for delivering. The attribute 'oneway' is also considered in this research, and road segments which are 'oneway' can only be used in one direction.
-
 \begin{figure*}[htbp]
     \centering
     \begin{minipage}[t]{0.48\textwidth}
@@ -181,7 +193,6 @@ The access type determines wether a road segment can be used for delivering. The
     \caption{\label{fig:accra_access} The access types of Accra}
     \end{minipage}
 \end{figure*}
-
 The elevation data is SRTM 1 Arc-Second Global retrieved from website USGS. The elevation data is in raster format, whose resolution is about 30 meters/pixel. 
 The integration 2D road data and elevation data is to add one key 'ele' in the key 'geometry' for each point in the 2D road json file, which represents the elevation of that point. 
 Because the elevation data is a raster data and each pixel of elevation data is in shape of $30m*30m$, 
@@ -277,13 +288,11 @@ The deep learning model architecture used in this research is Pointer Network\ci
 The Pointer Network's structure is as shown in Fig.~\ref{fig:pointernet} uses one encoder to receive and transcode the adjacent matrix data into the hidden layer.
 Then it uses a decoder and an attention mechanism to calculate the mechanism score with the hidden layer of encoder.
 And the mechanism score is used to produce the pointer or index of the next location to go.
-
-\begin{figure*}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Pointer_network.jpg}
     \caption{\label{fig:pointernet}Illustration of pointer network}
-\end{figure*}
-
+\end{figure}
 The decoder is a masked LSTM model, after a location is predicted in a time step, the pointer for this location will be masked.
 
 To train this model, a 100k dataset is generated. Each data point contains one adjacent matrix and one label.
@@ -298,6 +307,7 @@ The model is trained for 10k epochs, with the 1024 batch size, 0.001 learning ra
 \subsection{Performance of Integration Part}
 The tool developed in this research shows a great result of calculating the optimized route for any two locations in the Accra.
 The visualisation of the path planing done by this tool is show in Fig. ~\ref{fig:mine}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{kotoka_uni_mine.jpg}

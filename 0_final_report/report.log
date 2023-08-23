@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.1)  15 AUG 2023 23:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.1)  17 AUG 2023 13:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -474,21 +474,21 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-cmr.cfg
-File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
-)
-<./figures//solution_of_a_TSP.png, id=62, 1284.8pt x 1195.46625pt>
-File: ./figures//solution_of_a_TSP.png Graphic file (type png)
-<use ./figures//solution_of_a_TSP.png>
-Package pdftex.def Info: ./figures//solution_of_a_TSP.png  used on input line 85.
-(pdftex.def)             Requested size: 182.09486pt x 169.4254pt.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.88 \end{figure}
-                  [1{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 90--104
+l.85 
+      [1{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
+)
+<./figures//solution_of_a_TSP.png, id=72, 1284.8pt x 1195.46625pt>
+File: ./figures//solution_of_a_TSP.png Graphic file (type png)
+<use ./figures//solution_of_a_TSP.png>
+Package pdftex.def Info: ./figures//solution_of_a_TSP.png  used on input line 96.
+(pdftex.def)             Requested size: 182.09486pt x 169.4254pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--115
 
  []
 
@@ -496,120 +496,112 @@ Underfull \hbox (badness 10000) in paragraph at lines 90--104
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.116 \subsection
-                 {Code structure} <./figures//solution_of_a_TSP.png>]
-<./figures//code_structure.jpg, id=105, 2286.5425pt x 1162.3425pt>
+l.124 
+       <./figures//solution_of_a_TSP.png>]
+<./figures//code_structure.jpg, id=116, 2286.5425pt x 1162.3425pt>
 File: ./figures//code_structure.jpg Graphic file (type jpg)
 <use ./figures//code_structure.jpg>
-Package pdftex.def Info: ./figures//code_structure.jpg  used on input line 141.
+Package pdftex.def Info: ./figures//code_structure.jpg  used on input line 164.
 (pdftex.def)             Requested size: 455.24411pt x 231.41797pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 147--154
-
- []
-
-[3
+ [3]
+<./figures//Roadtype.jpg, id=139, 714.67pt x 895.345pt>
+File: ./figures//Roadtype.jpg Graphic file (type jpg)
+<use ./figures//Roadtype.jpg>
+Package pdftex.def Info: ./figures//Roadtype.jpg  used on input line 187.
+(pdftex.def)             Requested size: 199.16928pt x 249.51997pt.
+<./figures//AccessType.jpg, id=140, 680.5425pt x 847.165pt>
+File: ./figures//AccessType.jpg Graphic file (type jpg)
+<use ./figures//AccessType.jpg>
+Package pdftex.def Info: ./figures//AccessType.jpg  used on input line 192.
+(pdftex.def)             Requested size: 199.16928pt x 247.93372pt.
+<./figures//interpolation.jpg, id=142, 1150.2975pt x 1116.17pt>
+File: ./figures//interpolation.jpg Graphic file (type jpg)
+<use ./figures//interpolation.jpg>
+Package pdftex.def Info: ./figures//interpolation.jpg  used on input line 204.
+(pdftex.def)             Requested size: 227.62206pt x 220.86269pt.
+ [4
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.155 -
-       --------------------------------------------------------------\\ <./figures//code_structure.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 155--156
-
- []
-
-<./figures//Roadtype.jpg, id=113, 714.67pt x 895.345pt>
-File: ./figures//Roadtype.jpg Graphic file (type jpg)
-<use ./figures//Roadtype.jpg>
-Package pdftex.def Info: ./figures//Roadtype.jpg  used on input line 175.
-(pdftex.def)             Requested size: 199.16928pt x 249.51997pt.
-<./figures//AccessType.jpg, id=114, 680.5425pt x 847.165pt>
-File: ./figures//AccessType.jpg Graphic file (type jpg)
-<use ./figures//AccessType.jpg>
-Package pdftex.def Info: ./figures//AccessType.jpg  used on input line 180.
-(pdftex.def)             Requested size: 199.16928pt x 247.93372pt.
-<./figures//interpolation.jpg, id=116, 1150.2975pt x 1116.17pt>
-File: ./figures//interpolation.jpg Graphic file (type jpg)
-<use ./figures//interpolation.jpg>
-Package pdftex.def Info: ./figures//interpolation.jpg  used on input line 193.
-(pdftex.def)             Requested size: 227.62206pt x 220.86269pt.
-[4
+l.207 \end{figure}
+                   <./figures//code_structure.jpg>] [5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.196 \end{figure}
-                  
+l.218     \end{equation}
+                        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.196 \end{figure}
-                   <./figures//Roadtype.jpg> <./figures//AccessType.jpg>] [5
+l.218     \end{equation}
+                        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.224 
-       <./figures//interpolation.jpg>] [6
+l.218     \end{equation}
+                         <./figures//Roadtype.jpg> <./figures//AccessType.jpg> <./figures//interpolation.jpg>] [6]
+<./figures//Pointer_network.jpg, id=177, 1027.84pt x 853.1875pt>
+File: ./figures//Pointer_network.jpg Graphic file (type jpg)
+<use ./figures//Pointer_network.jpg>
+Package pdftex.def Info: ./figures//Pointer_network.jpg  used on input line 293.
+(pdftex.def)             Requested size: 364.19667pt x 302.31737pt.
+ [7
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.280 
-      ]
-<./figures//Pointer_network.jpg, id=150, 728.7225pt x 644.4075pt>
-File: ./figures//Pointer_network.jpg Graphic file (type jpg)
-<use ./figures//Pointer_network.jpg>
-Package pdftex.def Info: ./figures//Pointer_network.jpg  used on input line 283.
-(pdftex.def)             Requested size: 364.19667pt x 322.05547pt.
-<./figures//kotoka_uni_mine.jpg, id=152, 1553.805pt x 1256.695pt>
+l.296 T
+       he decoder is a masked LSTM model, after a location is predicted in a...]
+<./figures//kotoka_uni_mine.jpg, id=184, 1553.805pt x 1256.695pt>
 File: ./figures//kotoka_uni_mine.jpg Graphic file (type jpg)
 <use ./figures//kotoka_uni_mine.jpg>
-Package pdftex.def Info: ./figures//kotoka_uni_mine.jpg  used on input line 303.
+Package pdftex.def Info: ./figures//kotoka_uni_mine.jpg  used on input line 313.
 (pdftex.def)             Requested size: 318.66948pt x 257.72002pt.
- [7
+ [8
 pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.306 T
+l.316 T
        he corresponding path planing done by Google is shown in Fig. ~\ref{f... <./figures//Pointer_network.jpg>]
-<./figures//kotoka_uni_google.jpg, id=161, 859.21pt x 997.7275pt>
+<./figures//kotoka_uni_google.jpg, id=191, 859.21pt x 997.7275pt>
 File: ./figures//kotoka_uni_google.jpg Graphic file (type jpg)
 <use ./figures//kotoka_uni_google.jpg>
-Package pdftex.def Info: ./figures//kotoka_uni_google.jpg  used on input line 310.
+Package pdftex.def Info: ./figures//kotoka_uni_google.jpg  used on input line 320.
 (pdftex.def)             Requested size: 182.09486pt x 211.44719pt.
- [8
+ [9
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.322     \item K
+l.332     \item K
                  otoka International Airport - Accra zoo
 pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.322     \item K
-                 otoka International Airport - Accra zoo <./figures//kotoka_uni_mine.jpg> <./figures//kotoka_uni_google.jpg>] [9
+l.332     \item K
+                 otoka International Airport - Accra zoo <./figures//kotoka_uni_mine.jpg> <./figures//kotoka_uni_google.jpg>] [10
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.389 
+l.399 
       ] (./report.bbl
 LaTeX Font Info:    Font shape `OT1/cmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 5.
- [10]) [11] (./report.aux)
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 6.
+ [11] [12]) [13] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: CFB388D834B1BA7DCFA3243A8E24D9B3;2004.
  ) 
 Here is how much of TeX's memory you used:
- 16911 strings out of 476025
- 288966 string characters out of 5790018
+ 16943 strings out of 476025
+ 289473 string characters out of 5790018
  1866388 words of memory out of 5000000
- 36943 multiletter control sequences out of 15000+600000
- 523552 words of font info for 124 fonts, out of 8000000 for 9000
+ 36957 multiletter control sequences out of 15000+600000
+ 523668 words of font info for 126 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,9n,90p,1065b,562s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,9n,90p,1065b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb>
-Output written on report.pdf (12 pages, 1695287 bytes).
+Output written on report.pdf (14 pages, 1743664 bytes).
 PDF statistics:
- 258 PDF objects out of 1000 (max. 8388607)
- 208 compressed objects within 3 object streams
- 65 named destinations out of 1000 (max. 500000)
+ 296 PDF objects out of 1000 (max. 8388607)
+ 244 compressed objects within 3 object streams
+ 79 named destinations out of 1000 (max. 500000)
  24713 words of extra memory for PDF output out of 24883 (max. 10000000)
 

@@ -1,5 +1,20 @@
 \begin{thebibliography}{10}
 
+\bibitem{Dijkstra:1959aa}
+E.~W. Dijkstra.
+\newblock A note on two problems in connexion with graphs.
+\newblock {\em Numerische Mathematik}, 1(1):269--271, 1959.
+
+\bibitem{bellman}
+R.~Bellman.
+\newblock On a routing problem.
+\newblock {\em Quart. Appl. Math.}, 16(1):87--90, 1958.
+
+\bibitem{journals/tpds/BusatoB16}
+Federico Busato and Nicola Bombieri.
+\newblock An efficient implementation of the bellman-ford algorithm for kepler gpu architectures.
+\newblock {\em IEEE Trans. Parallel Distributed Syst.}, 27(8):2222--2233, 2016.
+
 \bibitem{lawler1985travelling}
 E.L. Lawler.
 \newblock {\em The Travelling Salesman Problem: A Guided Tour of Combinatorial Optimization}.
@@ -64,8 +79,50 @@ Jiquan Wang, Igo Besselink, and Henk Nijmeijer.
 \newblock Battery electric vehicle energy consumption prediction for a trip based on route information.
 \newblock {\em Proceedings of the Institution of Mechanical Engineers, Part D: Journal of Automobile Engineering}, 232(11):1528--1542, 2018.
 
+\bibitem{SHI2022681}
+Yong Shi and Yuanying Zhang.
+\newblock The neural network methods for solving traveling salesman problem.
+\newblock {\em Procedia Computer Science}, 199:681--686, 2022.
+
+\bibitem{Hopfield:1985aa}
+J.~J. Hopfield and D.~W. Tank.
+\newblock ``neural''computation of decisions in optimization problems.
+\newblock {\em Biological Cybernetics}, 52(3):141--152, 1985.
+
+\bibitem{Luo2019DesignAI}
+Yanfen Luo.
+\newblock Design and improvement of hopfield network for tsp.
+\newblock {\em Proceedings of the 2019 International Conference on Artificial Intelligence and Computer Science}, 2019.
+
+\bibitem{10.1007/s00521-018-3535-9}
+Junfei Qiao, Zhiqiang Hu, and Wenjing Li.
+\newblock Hysteretic noisy frequency conversion sinusoidal chaotic neural network for traveling salesman problem.
+\newblock {\em Neural Comput. Appl.}, 31(11):7055--7069, nov 2019.
+
+\bibitem{improv_hop}
+Lucas Garc{\'\i}a, Pedro Talav{\'a}n, and Javier Y{\'a}{\~n}ez.
+\newblock Improving the hopfield model performance when applied to the traveling salesman problem.
+\newblock {\em Soft Computing}, 21, 07 2017.
+
+\bibitem{graph_neural}
+Marcelo O.~R. Prates, Pedro H.~C. Avelar, Henrique Lemos, Luis Lamb, and Moshe Vardi.
+\newblock Learning to solve np-complete problems - a graph neural network for decision tsp, 2018.
+
+\bibitem{vanOtterlo2012}
+Martijn van Otterlo and Marco Wiering.
+\newblock {\em Reinforcement Learning and Markov Decision Processes}, pages 3--42.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2012.
+
 \bibitem{vinyals2017pointer}
 Oriol Vinyals, Meire Fortunato, and Navdeep Jaitly.
 \newblock Pointer networks, 2017.
+
+\bibitem{ma2019combinatorial}
+Qiang Ma, Suwen Ge, Danyang He, Darshan Thaker, and Iddo Drori.
+\newblock Combinatorial optimization by graph pointer networks and hierarchical reinforcement learning, 2019.
+
+\bibitem{bello2017neural}
+Irwan Bello, Hieu Pham, Quoc~V. Le, Mohammad Norouzi, and Samy Bengio.
+\newblock Neural combinatorial optimization with reinforcement learning, 2017.
 
 \end{thebibliography}

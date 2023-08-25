@@ -3,16 +3,15 @@ import json
 from typing import List, Union
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from PIL import Image
-import geopandas as gpd
 import pyproj
 from mpl_toolkits.mplot3d import Axes3D
 import networkx as nx
-from .City import City
 from collections import Counter
 from pprint import pprint
 from tqdm import tqdm
+
+from .City import City
 from .CostFunctions import CostFunctions
 
 class RoadNetwork3D():
@@ -51,7 +50,7 @@ class RoadNetwork3D():
             for feature in tqdm(self.road2D, desc='Reading data: ', unit='item'):
                 if 'tags' in feature:
                     for key, value in feature['tags'].items():
-                        if key in ['highway', 'oneway', 'maxspeed','junction','access']:
+                        if key in ['highway', 'oneway', 'maxspeed','junction','access', 'lanes']:
                             self.all_tags.setdefault(key, Counter())[value] += 1
     
     def add_road_type(self, names: Union[str, List[str]] = None) -> None:
@@ -393,7 +392,6 @@ class RoadNetwork3D():
                         # Skip the ways that has no access
                         continue
                     if way['type'] == 'way' and 'tags' in way and 'highway' in way['tags'] and way['tags']['highway'] in self.road_type:
-
                         # Ensure the roads to be integrated is within the elevation data bound.
                         if self.ele_bound[0]<=180 and (way['bounds']['maxlat'] > self.ele_bound[0]
                             or way['bounds']['minlat'] < self.ele_bound[1]
@@ -519,7 +517,7 @@ class RoadNetwork3D():
                     coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat'], way['geometry'][node_index]['ele']) for node_index, node_id in enumerate(node_ids)]
                     x_values, y_values, z_values = zip(*coordinates)
 
-                    if 'tags' in way and 'oneway' in way['tags'] and way['tags']['oneway'] == 'yes':
+                    if 'tags' in way and (('oneway' in way['tags'] and way['tags']['oneway'] == 'yes') or ('lanes' in way['tags'] and way['tags']['lanes'] == '1')):
                         #create edge for one-way road
                         for node_index, node_id in enumerate(node_ids):
                             if node_index == len(node_ids)-1:
@@ -657,16 +655,16 @@ if __name__ == '__main__':
     accra_road.integrate()
     accra_road.create_network()
 
-    kotoka_airport = City(5.606245608959031, -0.1733563315403809, None, lon_lat=False)
-    uni_ghana = City(5.650320731540692, -0.19627312529607963, None, lon_lat=False)
-    accra_zoo = City(5.625143099493793, -0.202923916977945, None, lon_lat=False)
-    national_museum = City(5.56247315167632, -0.2066102816554413, None, lon_lat=False)
+    kotoka_airport = City(5.605522862563998, -0.17187326099346129, None, lon_lat=False)
+    uni_ghana = City(5.650618146052781, -0.18703194651322047, None, lon_lat=False)
+    accra_zoo = City(5.625370802046447, -0.20300362767245603, None, lon_lat=False)
+    national_museum = City(5.560739525028722, -0.20650512945516059, None, lon_lat=False)
 
     print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='distance'))
-    print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='time'))
-    print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='time'))
-    print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='time'))
-    print(accra_road.get_shortest_path_length(accra_zoo, national_museum, weight='time'))
+    print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='distance'))
+    print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='distance'))
+    print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='distance'))
+    print(accra_road.get_shortest_path_length(accra_zoo, national_museum, weight='distance'))
 
     # accra_road.draw_2Droad()
     # print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana))

@@ -1,9 +1,8 @@
 import random
-from Road_Network import RoadNetwork3D
+from .Road_Network import RoadNetwork3D
 import numpy as np
 from typing import List
-from City import City
-import pprint
+from .City import City
 import itertools
 
 def generate_random_CityWeight(G: RoadNetwork3D, bound_list: List[int]=[6,5,-1,0], num_city: int=5):

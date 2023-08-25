@@ -1,13 +1,13 @@
 from typing import List
 import networkx as nx
 import matplotlib.pyplot as plt
-from .Road_Network import RoadNetwork3D
 from matplotlib.gridspec import GridSpec
 import numpy as np
 import pyproj
 from matplotlib.cm import ScalarMappable
 
 from .City import City
+from .Road_Network import RoadNetwork3D
 
 class Visulisation():
     def __init__(self, network:RoadNetwork3D) -> None:
@@ -159,6 +159,23 @@ class Visulisation():
         """
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
+        z_max = 0
+        z_min = 100000
+
+        #iterate all nodes to find the max and min elevation for later normalization
+        for way in self.road3D:
+            if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
+                # Skip the ways that has no access
+                continue
+            if (way['type'] == 'way' 
+            and 'tags' in way 
+            and 'highway' in way['tags'] 
+            and way['tags']['highway'] in way_list):
+                node_ids = way['nodes']
+                coordinates = [(way['geometry'][node_index]['lon'], way['geometry'][node_index]['lat'], way['geometry'][node_index]['ele']) for node_index, node_id in enumerate(node_ids)]
+                x_values, y_values, z_values = zip(*coordinates)
+                z_max = max(z_max, max(z_values))
+                z_min = min(z_min, min(z_values))
 
         for way in self.road3D:
             if way['type'] == 'way' and 'tags' in way and 'access' in way['tags'] and way['tags']['access'] in ['private', 'customers', 'no', 'students', 'school', 'delivery']:
@@ -174,11 +191,11 @@ class Visulisation():
                 x_values, y_values, z_values = zip(*coordinates)
                 
                 cmap = plt.cm.coolwarm  # Choose a colormap (you can use any colormap you prefer)
-                normalized_elevation = (z_values - min(z_values)) / (max(z_values) - min(z_values))  # Normalize the elevation values to [0, 1]
+                normalized_elevation = (z_values - min(z_values)) / (z_max - z_min)  # Normalize the elevation values to [0, 1]
                 colors = [cmap(value) for value in normalized_elevation]
 
                 for i in range(len(x_values) - 1):
-                    ax.plot([x_values[i], x_values[i+1]], [y_values[i], y_values[i+1]], [z_values[i], z_values[i+1]], color=colors[i], linewidth=0.5)
+                    ax.plot([x_values[i], x_values[i+1]], [y_values[i], y_values[i+1]], [normalized_elevation[i], normalized_elevation[i+1]], color=colors[i], linewidth=0.5)
 
         ax.set_xlabel('Longitude')
         ax.set_ylabel('Latitude')
@@ -236,15 +253,15 @@ if __name__ == '__main__':
     accra_zoo = City(5.625370802046447, -0.20300362767245603, None, lon_lat=False)
     national_museum = City(5.560739525028722, -0.20650512945516059, None, lon_lat=False)
 
-    shortest_path = accra_road.get_shortest_path(kotoka_airport, uni_ghana, weight='distance')
+    shortest_path = accra_road.get_shortest_path(accra_zoo, uni_ghana, weight='time')
 
     visual = Visulisation(accra_road)
+    visual.show_route(shortest_path)
     #visual.draw_2Droad()
-    visual.show_route(shortest_path, ele_back=True)
 
     print("Time: ")
     print("--------")
-    print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='time')) #9min
+    print(accra_road.get_shortest_path_length(kotoka_airport, uni_ghana, weight='time')) #13min
     print(accra_road.get_shortest_path_length(kotoka_airport, accra_zoo, weight='time')) #15min
     print(accra_road.get_shortest_path_length(kotoka_airport, national_museum, weight='time')) #13min
     print(accra_road.get_shortest_path_length(accra_zoo, uni_ghana, weight='time')) #22min

@@ -16,11 +16,10 @@
 \citation{Dijkstra:1959aa}
 \citation{bellman}
 \citation{journals/tpds/BusatoB16}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Background}{1}{subsection.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Literature Review}{1}{subsection.1.2}\protected@file@percent }
 \citation{lawler1985travelling}
 \citation{TSP_wiki}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Route optimization problem}{1}{subsection.1.1}\protected@file@percent }
 \citation{TSP_review}
 \citation{genetic_on_TSP}
 \citation{ACO_on_TSP}
@@ -32,8 +31,6 @@
 \citation{green_vehicle}
 \citation{article}
 \citation{battery_predict}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  A solution example for TSP.}}{2}{figure.1}\protected@file@percent }
-\newlabel{fig:solution_of_TSP}{{1}{2}{A solution example for TSP}{figure.1}{}}
 \citation{SHI2022681}
 \citation{Hopfield:1985aa}
 \citation{Luo2019DesignAI}
@@ -44,37 +41,39 @@
 \citation{vinyals2017pointer}
 \citation{ma2019combinatorial}
 \citation{bello2017neural}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Code structure}{3}{subsection.1.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  The code structure.}}{4}{figure.2}\protected@file@percent }
-\newlabel{fig:code_struc}{{2}{4}{The code structure}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  A solution example for TSP. Red points represent locations, lines represent the optimized route.}}{2}{figure.1}\protected@file@percent }
+\newlabel{fig:solution_of_TSP}{{1}{2}{A solution example for TSP. Red points represent locations, lines represent the optimized route}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Code structure}{3}{subsection.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  The code structure. The dark grey block is class, the light grey block is a function, the blue block is data.}}{4}{figure.2}\protected@file@percent }
+\newlabel{fig:code_struc}{{2}{4}{The code structure. The dark grey block is class, the light grey block is a function, the blue block is data}{figure.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{4}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Integrate data for 3D road data}{4}{subsection.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The road types of Accra}}{5}{figure.3}\protected@file@percent }
-\newlabel{fig:accra_road}{{3}{5}{The road types of Accra}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  The access types of Accra}}{5}{figure.4}\protected@file@percent }
-\newlabel{fig:accra_access}{{4}{5}{The access types of Accra}{figure.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Illustration of interpolation}}{5}{figure.5}\protected@file@percent }
-\newlabel{fig:interpolation}{{5}{5}{Illustration of interpolation}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The road types of Accra. X-axis: road types of Accra, Y-axis: the quantity of each type.}}{5}{figure.3}\protected@file@percent }
+\newlabel{fig:accra_road}{{3}{5}{The road types of Accra. X-axis: road types of Accra, Y-axis: the quantity of each type}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  The access types of Accra. X-axis: access types of Accra, Y-axis: the quantity of each type.}}{5}{figure.4}\protected@file@percent }
+\newlabel{fig:accra_access}{{4}{5}{The access types of Accra. X-axis: access types of Accra, Y-axis: the quantity of each type}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Illustration of interpolation. Grids represent pixels of raster elevation data. Black points represent the center of grids. A, B, C and D represent four grid centers surrounding target red point P. The red dashed line divides grid D into four sub-grids. Red double arrow lines represent the distance between A, B, C, D and P.}}{6}{figure.5}\protected@file@percent }
+\newlabel{fig:interpolation}{{5}{6}{Illustration of interpolation. Grids represent pixels of raster elevation data. Black points represent the center of grids. A, B, C and D represent four grid centers surrounding target red point P. The red dashed line divides grid D into four sub-grids. Red double arrow lines represent the distance between A, B, C, D and P}{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Building 3D road network}{6}{subsection.2.2}\protected@file@percent }
 \citation{vinyals2017pointer}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Speed limit of different road types}}{7}{table.1}\protected@file@percent }
 \newlabel{tab:speed_limit}{{1}{7}{Speed limit of different road types}{table.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Pointer Network for TSP problem of 3D road network}{7}{subsection.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Illustration of pointer network}}{8}{figure.6}\protected@file@percent }
-\newlabel{fig:pointernet}{{6}{8}{Illustration of pointer network}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Illustration of pointer network. Ptr-Net - An encoding RNN converts the input sequence to a code (blue) that is fed to the generating network (purple). At each step, the generating network produces a vector that modulates a content-based attention mechanism over inputs ([5, 5]). The output of the attention mechanism is a softmax distribution with a dictionary size equal to the length of the input. The input at each step is an entry of the adjacent matrix.}}{8}{figure.6}\protected@file@percent }
+\newlabel{fig:pointernet}{{6}{8}{Illustration of pointer network. Ptr-Net - An encoding RNN converts the input sequence to a code (blue) that is fed to the generating network (purple). At each step, the generating network produces a vector that modulates a content-based attention mechanism over inputs ([5, 5]). The output of the attention mechanism is a softmax distribution with a dictionary size equal to the length of the input. The input at each step is an entry of the adjacent matrix}{figure.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{8}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Performance of Integration Part}{8}{subsection.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Path planing by this research}}{9}{figure.7}\protected@file@percent }
-\newlabel{fig:mine}{{7}{9}{Path planing by this research}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces  Path planing by Google}}{9}{figure.8}\protected@file@percent }
-\newlabel{fig:google}{{8}{9}{Path planing by Google}{figure.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces route results compare with Google}}{10}{table.2}\protected@file@percent }
-\newlabel{tab:route_results}{{2}{10}{route results compare with Google}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Performance of Integration}{8}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Path from Kotoka airport to University of Ghana by this research. Black lines are streets. Red lines are the shortest path. Colors represent elevation.}}{9}{figure.7}\protected@file@percent }
+\newlabel{fig: mine}{{7}{9}{Path from Kotoka airport to University of Ghana by this research. Black lines are streets. Red lines are the shortest path. Colors represent elevation}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces  Path from Kotoka airport to University of Ghana by Google.}}{9}{figure.8}\protected@file@percent }
+\newlabel{fig: google}{{8}{9}{Path from Kotoka airport to University of Ghana by Google}{figure.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Route results compare with Google.}}{10}{table.2}\protected@file@percent }
+\newlabel{tab:route_results}{{2}{10}{Route results compare with Google}{table.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Performance of Pointer Network}{10}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{11}{section.4}\protected@file@percent }
 \bibstyle{unsrt}
 \bibdata{references}
 \bibcite{Dijkstra:1959aa}{1}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion and Conclusions}{11}{section.4}\protected@file@percent }
 \bibcite{bellman}{2}
 \bibcite{journals/tpds/BusatoB16}{3}
 \bibcite{lawler1985travelling}{4}
@@ -87,6 +86,7 @@
 \bibcite{christofides_inbook}{11}
 \bibcite{improved_SA}{12}
 \bibcite{BRAEKERS2016300}{13}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{12}{section.5}\protected@file@percent }
 \bibcite{green_vehicle}{14}
 \bibcite{article}{15}
 \bibcite{battery_predict}{16}

@@ -42,6 +42,13 @@ This will create a conda environment called `jd622`. To activate, run:
 
   ``conda activate deluge``
 
+## Download Data
+Download 2D road data JSON file and elevation raster data file of Accra area from the link below (Users can use their own data of other area, but the format of data should be same as this):
+
+https://imperiallondon-my.sharepoint.com/:f:/g/personal/jd622_ic_ac_uk/EghwGhJTxGlIhjfsIkIcJxcBbV_fLLF_UPZ_rSChgTYNsg?e=3AbfEk
+
+put the `data` folder in the `irp-jd622` folder
+
 
 # User Guide
 To use the route optimization system, navigate to the `irp-jd622` directory and run, `jupyter notebook`. Open the `User_Interface.ipynb` file in Jupyter Notebook. Follow the instructions of the user interface.

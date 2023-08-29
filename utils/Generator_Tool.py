@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 import random
 from .Road_Network import RoadNetwork3D
 import numpy as np

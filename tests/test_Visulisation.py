@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 import sys
 import pytest
 from unittest.mock import patch, Mock

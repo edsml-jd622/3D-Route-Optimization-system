@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 import numpy as np
 from typing import Tuple
 

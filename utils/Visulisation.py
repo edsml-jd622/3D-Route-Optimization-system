@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 from typing import List
 import networkx as nx
 import matplotlib.pyplot as plt

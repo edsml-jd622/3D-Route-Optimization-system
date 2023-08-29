@@ -1,3 +1,6 @@
+'''
+This code is referenced by the following link: https://github.com/shirgur/PointerNet.
+'''
 import torch
 import torch.nn as nn
 from torch.nn import Parameter

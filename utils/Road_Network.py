@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 import copy
 import json
 from typing import List, Union

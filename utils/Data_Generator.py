@@ -1,3 +1,7 @@
+'''
+Name: Jinsong Dong
+GitHub Username: edsml-jd622
+'''
 import torch
 import torch.nn as nn
 from torch_geometric.data import Data

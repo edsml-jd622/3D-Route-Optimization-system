@@ -1,0 +1,10 @@
+name: jd622
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+ - pip
+ - ipython
+ - jupyter
+ - pip:
+   - -r requirements.txt

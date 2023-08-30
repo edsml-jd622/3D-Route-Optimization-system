@@ -40,7 +40,7 @@ Naviate to the ``irp-jd622`` directory and run:
 
 This will create a conda environment called `jd622`. To activate, run:
 
-  ``conda activate deluge``
+  ``conda activate jd622``
 
 ## Download Data
 Download 2D road data JSON file and elevation raster data file of Accra area from the link below (Users can use their own data of other area, but the format of data should be same as this):

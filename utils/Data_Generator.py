@@ -2,13 +2,7 @@
 Name: Jinsong Dong
 GitHub Username: edsml-jd622
 '''
-import torch
-import torch.nn as nn
-from torch_geometric.data import Data
-from torch_geometric.nn import GCNConv
-from torch_geometric.utils import from_networkx
 from Road_Network import RoadNetwork3D
-from City import City
 import numpy as np
 from Generator_Tool import generate_random_CityWeight, tsp_bruteforce
 

@@ -36,7 +36,7 @@ The tool also offers route planning and visualization capabilities.
 
 The integration function can be applied to any user-specified region. 
 When it comes to route planning, 
-the tool achieves a relative error of 7.074\% in finding the shortest path and 13.05\% in determining the most time-efficient route, 
+the tool achieves a relative error of 11.95\% in finding the shortest path and 23.73\% in determining the most time-efficient route, 
 compared to Google Maps.
 
 To extend its utility, the study delves into solving the Traveling Salesman Problem (TSP) within real-world street networks. 
@@ -340,11 +340,12 @@ It can be seen that the travel paths are almost the same in this case.
 \end{figure}
 
 To verify the performance of the tool developed in this research, 
-the optimized paths of 5 pairs of locations are compared with the path from Google Maps for the same 5 pairs of locations.
+the optimized paths of 100 random pairs of locations are compared with the paths from Google Maps for the same 100 pairs of locations.
+The relative mean squared error(RMSE) is calculated for the 100 random paths is calculated.
 To verify the distance cost function, walking is chosen for transportation in Google Maps as this is the way to get the shortest way.
 To verify the time travel cost function, driving with a clear road is chosen for transportation in Google Maps as this is the way to get the least time-consuming path.
 
-The five pairs of locations are as follows:
+Five sample pairs locations for testing are as follows:
 \begin{enumerate}
     \item Kotoka International Airport - University of Ghana
     \item Kotoka International Airport - Accra zoo
@@ -369,8 +370,8 @@ The five pairs of locations are as follows:
     \end{tabular}
     \caption{\label{tab:route_results}Route results compare with Google.}
 \end{table}
-The compared results are shown as Table \ref{tab:route_results}. 
-As we can see, the mean relative error of distance is 7.074\%. 
+The compared results of five sample paths are shown as Table \ref{tab:route_results}. 
+As we can see, the RMSE of distance for 100 random paths is 11.95\%. 
 This is a relatively good result, which means that this tool can find the shortest path in most cases.
 But there still are some cases that are not the shortest way like case 5.
 The reason may be that this tool only finds the effective route of road segments with the 'highway' tag,
@@ -381,7 +382,7 @@ This may be because some road segments can not be accessed but have no 'access' 
 so the tool makes it able to be accessed by default. These road segments can be a shortcut which can make the path shorter.
 
 For the travel time part, the tool's result seems to not be good enough.
-The average relative error is 13.02\%, which is relatively high. 
+The RMSE of travel time is 23.73\%, which is relatively high. 
 It can be seen from the table that most travel time calculated by the tool is smaller than travel time from Google Maps.
 There might be two reasons for that. 
 The first reason is the vehicle speed of each road segment in this tool is the max speed limit. 
@@ -463,8 +464,8 @@ or the structure of the model could be improved in the future so that it can ada
 \section{Conclusion}
 In this research, a tool that can integrate 2D road data and elevation data into 3D road data as well as route planning and visualization is developed.
 The integration function of the tool can be used on any other area in addition to Accra specified by users. 
-The route planning function of the tool can achieve 7.074\% relative error for finding the shortest path,
-and 13.05\% relative error for finding the most time-saving path compared to Google Maps.
+The route planning function of the tool can achieve 11.95\% relative error for finding the shortest path,
+and 23.73\% relative error for finding the most time-saving path compared to Google Maps.
 Using the data generated from the tool mentioned above, 
 a revised Pointer Network is implemented to predict the answer of TSP given adjacent matrix, 
 which can be used for real-world street route optimization.

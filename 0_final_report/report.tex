@@ -115,14 +115,15 @@ The research about route optimization with the deep learning part mentioned abov
 this data format can only reflect the straight-line distance between locations which is not able to reflect the distance of the real-world road network.
 In this project, the path planning part is considered with 3D coordinates 
 and a small revision is made on the Pointer Network so that it can use the adjacent matrix as input data format to solve the TSP problem on a real-world network.
-Snoocode Corporation has designed a route optimization system that works offline on a smartphone and provides 
+
+This project was proposed by SnooCODE Corporation. SnoocCODE has designed a route optimization system that works offline on a smartphone and provides 
 results 42000 times faster than the conventional method. However, this method only considers a 2D map.
-The next step for Snoocode is developing a method that can optimize the route considering land elevation. 
+The next step for SnooCODE is developing a method that can optimize the route considering land elevation. 
 Elevation is a very important factor for electric bikes and bicycles which are the main transportation of delivery companies in Accra.
 To be more specific about the function of the route optimization system, suppose there are 20 locations to
 give delivery to, the shortest way need to be found so that every location can be delivered. 
 
-For making a system to do 3D route optimization, the problem is divided into four parts: 
+For making a system to do 3D route optimization, the problem is divided into three parts: 
 \begin{itemize}
     \item Data processing. Existing software for route optimization or path planning now only uses 2D road data.
           And the coordinates of available open-source road data are in 2D format.
@@ -146,7 +147,7 @@ For making a system to do 3D route optimization, the problem is divided into fou
 
 \subsection{Code structure}
 The codes in this research are developed by Python and encapsulated into several classes based on their functionality.
-The structure of the codes is as shown in Fig~ \ref{fig:code_struc.}.
+The structure of the codes is as shown in Fig~ \ref{fig:code_struc}.
 The Road\_network class is the main class for integrating 2D road data with elevation data and creating road network graphs.
 There are also some small functions in this class, 
 for example: 'get\_data\ function' to get the data stored in the class, 
@@ -192,22 +193,14 @@ In each road segment, the length of 'nodes' is equal to the length of 'geometry'
 Connecting the series of points within each element forms the road segment.
 
 The value of the key 'tags' contains the attribute of each road segment, for example: 'highway' is the type of road segment, and 'oneway' indicates whether the road segment is one-way direction.
-Fig.~\ref{fig:accra_road} shows the road type distribution of Accra, and Fig.~ \ref{fig:accra_access} shows the access distribution of Accra. 
+Fig.~\ref{fig:accra_road} (a) shows the road type distribution of Accra, and Fig.~ \ref{fig:accra_road} (b) shows the access distribution of Accra. 
 The road type of road segments has a significant influence on the travel time calculation in a later chapter as there are different speed limits for different road types.
 The access type determines whether a road segment can be used for delivery. The attribute 'oneway' is also considered in this research, and road segments that are 'oneway' can only be used in one direction.
-\begin{figure*}[htbp]
+\begin{figure}[H]
     \centering
-    \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=7cm]{Roadtype.jpg}
-    \caption{\label{fig:accra_road} The road types of Accra. X-axis: road types of Accra, Y-axis: the quantity of each type.}
-    \end{minipage}
-    \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=7cm]{AccessType.jpg}
-    \caption{\label{fig:accra_access} The access types of Accra. X-axis: access types of Accra, Y-axis: the quantity of each type.}
-    \end{minipage}
-\end{figure*}
+    \includegraphics[width=1\textwidth]{Roadtype.jpg}
+    \caption{\label{fig:accra_road} (a).The road types of Accra. X-axis: road types of Accra, Y-axis: the quantity of each type. (b). The access types of Accra. X-axis: access types of Accra, Y-axis: the quantity of each type.}
+\end{figure}
 
 The elevation data is SRTM 1 Arc-Second Global retrieved from the website USGS. The elevation data is in raster format, whose resolution is about 30 meters/pixel. 
 The integration of 2D road data and elevation data is to add one key 'ele' in the key 'geometry' for each point in the 2D road JSON file, which represents the elevation of that point. 
@@ -215,7 +208,7 @@ Because the elevation data is a raster data and each pixel of elevation data is 
 there might be some different road points in the same grid. 
 
 To make the integration of these two data more precise, interpolation is applied so that every road point is assigned its elevation value according to the values of the four pixels surrounding it.
-The schematic diagram of interpolation is shown in Fig.~\ref{fig: interpolation}. The process of interpolation is as follows:
+The schematic diagram of interpolation is shown in Fig.~\ref{fig:interpolation}. The process of interpolation is as follows:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{interpolation.jpg}
@@ -317,7 +310,7 @@ The adjacent matrix is of five different random locations in Accra, the entry of
 and the label is the optimized route for these five locations in a format of the list of indices.
 The optimized route for each data point is calculated by brute-force algorithm, so it can be sure that the route is the optimal solution.
 
-The model is trained for 5000 epochs, with the 2048 batch size.
+The model is trained for 5000 epochs, with a batch size of 2048 and a learning rate of 0.0001.
 
 
 \section {Results}
@@ -371,8 +364,8 @@ Five sample pairs locations for testing are as follows:
     \caption{\label{tab:route_results}Route results compare with Google.}
 \end{table}
 The compared results of five sample paths are shown as Table \ref{tab:route_results}. 
-As we can see, the RMSE of distance for 100 random paths is 11.95\%. 
-This is a relatively good result, which means that this tool can find the shortest path in most cases.
+This table only serves five samples, all the data of the 100 random paths can be cound in GitHub repository. 
+The RMSE of distance for 100 random paths is 11.95\%, which means that this tool can find the shortest path in most cases.
 But there still are some cases that are not the shortest way like case 5.
 The reason may be that this tool only finds the effective route of road segments with the 'highway' tag,
 so some road segments without the 'highway' tag may be ignored,
@@ -381,8 +374,8 @@ What's interesting is that there are some paths found by this tool shorter than 
 This may be because some road segments can not be accessed but have no 'access' tag in the JSON file, 
 so the tool makes it able to be accessed by default. These road segments can be a shortcut which can make the path shorter.
 
-For the travel time part, the tool's result seems to not be good enough.
-The RMSE of travel time is 23.73\%, which is relatively high. 
+For the travel time part,
+the RMSE of travel time is 23.73\%. 
 It can be seen from the table that most travel time calculated by the tool is smaller than travel time from Google Maps.
 There might be two reasons for that. 
 The first reason is the vehicle speed of each road segment in this tool is the max speed limit. 
@@ -406,7 +399,7 @@ which is the ratio between the total length of the predicted route and of the tr
 The smaller the route length ratio is, the higher performance the model has, 
 and the best route length ratio should be 1.
 
-A test dataset with the size of 70000 is created to verify the performance of the model. 
+A test dataset with the size of 9000 is created to verify the performance of the model. 
 The result shows that the accuracy of the model is 67.0\%,
 and the mean route length ratio is 1.02.
 The performance of the pointer network with an adjacent matrix as input shows that 

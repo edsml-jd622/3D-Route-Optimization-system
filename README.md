@@ -81,8 +81,10 @@ Each instance of `City` class stores information of one location.
 
 
 ## Pointer Network Model
-**The Code of the Pointer Network Model is referenced by the following link: https://github.com/shirgur/PointerNet.**
+The pointer network model and its training Jupyter notebook can be found in folder `pointer_network`. In this folder, `PointerNet.py` is the model structure, 
+**the Code of the Pointer Network Model is referenced by the following link: https://github.com/shirgur/PointerNet.** `train_scaleData_2048batch.ipynb` is the training Jupyter Notebook. The only revision on the model structure is adding a parameter named `num_city` which is the input size of the embedding layer. Users can change this parameter to train the model for solving traveling salesman problem(TSP) for different number of locations. For example, if `num_city`=5, the model can used for solving TSP of 5 locations.
 
+In the `User_interface`:
 - `model = PointerNet(5,256,512,2,0,True)` and 
 `model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu'))['model'])`, load the trained Pointer Network Model.
 
@@ -95,3 +97,13 @@ Navigate the `jd622/tests/` folder, run each test with following code:
 - `pytest test_CostFunctions.py`
 - `pytest test_Generator_Tool.py`
 - `pytest test_Visulisation.py`
+
+# Other Files
+`performance_test` folder: 
+
+  - `Random_locations_testSystem.ipynb` is used to generate 100 random paths and their distance and travel time calculated by the system developed in this research. 
+  - `random_locations.csv` is the data file produced by `Random_locations_testSystem.ipynb`.
+  - `random_locations_withGoogle.csv` is based on `random_locations.csv`, only added distance and travel time from Google Maps manually for comparing.
+
+`utils` folder:
+  - `Data_Generator.py` a script for producing dataset for training Pointer Network.
